@@ -8,6 +8,10 @@ public class Cake {
 
   private static final int EXPIRY_TIME_IN_SECONDS = 5;
 
+  private static final int PRICE_POUNDS_LARGE = 50;
+  private static final int PRICE_POUNDS_MEDIUM = 35;
+  private static final int PRICE_POUNDS_SMALL = 20;
+
   @Getter
   private final Size size;
   @Getter
@@ -40,20 +44,20 @@ public class Cake {
 
   public Integer getPricePounds() throws CakeException {
     if (size == Size.LARGE) {
-      return 50;
+      return PRICE_POUNDS_LARGE;
     }
     if (size == Size.MEDIUM) {
-      return 35;
+      return PRICE_POUNDS_MEDIUM;
     }
     if (size == Size.SMALL) {
-      return 20;
+      return PRICE_POUNDS_SMALL;
     }
     throw new CakeException("Can't determine size and therefore price of cake");
   }
 
-  public long expiresInSeconds() {
+  public int expiresInSeconds() {
     long result = momentOfExpiryInUnixTime - getCurrentUnixTime();
-    return result < 0 ? 0 : result;
+    return Math.toIntExact(result < 0 ? 0 : result);
   }
 
   public void rename(String newName) {
