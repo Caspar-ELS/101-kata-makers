@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public class Cake {
 
-  public static final long ONE_HOUR_IN_SECONDS = 3600L;
+  public static final long FIVE_SECONDS = 5L;
   @Getter
   private final Size size;
   @Getter
@@ -25,7 +25,7 @@ public class Cake {
 
     this.name = (size.name() + " " + color.name() + " " + type.name() + " cake").toLowerCase().replace("_", " ");
 
-    this.expiryInSeconds = (System.currentTimeMillis() / 1000L) + ONE_HOUR_IN_SECONDS;
+    this.expiryInSeconds = (System.currentTimeMillis() / 1000L) + FIVE_SECONDS;
   }
 
   public int getPricePounds() {
@@ -45,8 +45,8 @@ public class Cake {
     }
   }
 
-  public long expiresInMinutes() {
-    long result = (expiryInSeconds - System.currentTimeMillis() / 1000L) / 60;
+  public long expiresInSeconds() {
+    long result = (expiryInSeconds - System.currentTimeMillis() / 1000L);
     return result < 0 ? 0 : result;
   }
 

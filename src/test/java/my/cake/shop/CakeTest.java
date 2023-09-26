@@ -59,12 +59,16 @@ class CakeTest {
   @SneakyThrows
   @Test
   public void shouldReturnMinutesToExpiryRoundingDown() {
-    Cake cake = new Cake(Size.MEDIUM, Colors.PURPLE, Type.CHOCOLATE);
-
-    Thread.sleep(1000);
-
+    Cake freshCake = new Cake(Size.MEDIUM, Colors.PURPLE, Type.CHOCOLATE);
+    Thread.sleep(500);
     Assertions.assertEquals(
-        59,
-        cake.expiresInMinutes());
+        2,
+        freshCake.expiresInSeconds());
+
+    Cake expiredCake = new Cake(Size.MEDIUM, Colors.PURPLE, Type.CHOCOLATE);
+    Thread.sleep(5500);
+    Assertions.assertEquals(
+        0,
+        expiredCake.expiresInSeconds());
   }
 }
