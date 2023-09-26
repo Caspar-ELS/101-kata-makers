@@ -1,6 +1,7 @@
 package my.cake.shop;
 
 import lombok.SneakyThrows;
+import my.cake.shop.exception.CakeException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +24,7 @@ class CakeTest {
         "large yellow ice cream cake");
   }
 
+  @SneakyThrows
   @Test
   public void shouldReturnPricePounds() {
     Assertions.assertEquals(
@@ -40,9 +42,9 @@ class CakeTest {
             .getPricePounds(),
         20);
 
-    // edge case, technically possible, should ask PO what they want in this case
-    Assertions.assertNull(new Cake(null, Colors.WHITE, Type.ICE_CREAM)
-        .getPricePounds());
+    Assertions.assertThrows(
+        CakeException.class,
+        () -> new Cake(null, Colors.WHITE, Type.ICE_CREAM).getPricePounds());
   }
 
   @Test
@@ -62,15 +64,15 @@ class CakeTest {
 
   @SneakyThrows
   @Test
-  public void shouldReturnMinutesToExpiryRoundingDown() {
+  public void shouldReturnSecondsLeftToExpiryFromFiveSecondsRoundingDown() {
     Cake freshCake = new Cake(Size.MEDIUM, Colors.PURPLE, Type.CHOCOLATE);
-    Thread.sleep(500);
+    Thread.sleep(1000);
     Assertions.assertEquals(
-        2,
+        4,
         freshCake.expiresInSeconds());
 
     Cake expiredCake = new Cake(Size.MEDIUM, Colors.PURPLE, Type.CHOCOLATE);
-    Thread.sleep(5500);
+    Thread.sleep(6000);
     Assertions.assertEquals(
         0,
         expiredCake.expiresInSeconds());
