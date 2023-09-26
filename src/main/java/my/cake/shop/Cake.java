@@ -1,20 +1,21 @@
 package my.cake.shop;
 
 import lombok.Getter;
-import lombok.Setter;
 
 public class Cake {
 
-  public static final int FIVE_DAYS_IN_SECONDS = 432000;
+  public static final long ONE_HOUR_IN_SECONDS = 3600L;
+  @Getter
   private final Size size;
+  @Getter
   private final Colors color;
+  @Getter
   private final Type type;
 
   @Getter
   private final long expiryInSeconds;
 
   @Getter
-  @Setter
   private String name;
 
   public Cake(Size size, Colors color, Type type) {
@@ -22,9 +23,9 @@ public class Cake {
     this.color = color;
     this.type = type;
 
-    this.name = (size.name() + " " + color.name() + " " + type.name() + " cake").toLowerCase();
+    this.name = (size.name() + " " + color.name() + " " + type.name() + " cake").toLowerCase().replace("_", " ");
 
-    this.expiryInSeconds = (System.currentTimeMillis() / 1000L) + FIVE_DAYS_IN_SECONDS;
+    this.expiryInSeconds = (System.currentTimeMillis() / 1000L) + ONE_HOUR_IN_SECONDS;
   }
 
   public int getPricePounds() {
@@ -47,5 +48,9 @@ public class Cake {
   public long expiresInMinutes() {
     long result = (expiryInSeconds - System.currentTimeMillis() / 1000L) / 60;
     return result < 0 ? 0 : result;
+  }
+
+  public void rename(String newName) {
+    this.name = newName;
   }
 }
