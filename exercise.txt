@@ -1,6 +1,6 @@
 - 5 minutes
 - fast
-- small easy tests
+- small tests
 - don't overthink
 
 CHAPTER 1: THE CAKE
@@ -18,4 +18,4 @@ CHAPTER 1: THE CAKE
 CHAPTER 1: THE SHOP
 - After making a cake I want to be able to put a cake in my shop, and I want to be able to check how many cakes are in my shop
 - When a cake expires, I want to have it automatically removed from my shop
-- 
+-
