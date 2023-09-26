@@ -39,6 +39,10 @@ class CakeTest {
         new Cake(Size.SMALL, Colors.WHITE, Type.ICE_CREAM)
             .getPricePounds(),
         20);
+
+    // edge case, technically possible, should ask PO what they want in this case
+    Assertions.assertNull(new Cake(null, Colors.WHITE, Type.ICE_CREAM)
+        .getPricePounds());
   }
 
   @Test

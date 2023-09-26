@@ -28,7 +28,7 @@ public class Cake {
     this.expiryInSeconds = (System.currentTimeMillis() / 1000L) + FIVE_SECONDS;
   }
 
-  public int getPricePounds() {
+  public Integer getPricePounds() {
     switch (size) {
       case LARGE -> {
         return 50;
@@ -40,7 +40,7 @@ public class Cake {
         return 20;
       }
       default -> {
-        return 0;
+        return null;
       }
     }
   }
