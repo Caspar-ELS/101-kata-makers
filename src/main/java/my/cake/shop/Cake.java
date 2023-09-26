@@ -41,9 +41,11 @@ public class Cake {
   public Integer getPricePounds() throws CakeException {
     if (size == Size.LARGE) {
       return 50;
-    } else if (size == Size.MEDIUM) {
+    }
+    if (size == Size.MEDIUM) {
       return 35;
-    } else if (size == Size.SMALL) {
+    }
+    if (size == Size.SMALL) {
       return 20;
     }
     throw new CakeException("Can't determine size and therefore price of cake");
