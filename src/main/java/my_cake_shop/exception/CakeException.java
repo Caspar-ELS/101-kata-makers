@@ -1,4 +1,4 @@
-package my.cake.shop.exception;
+package my_cake_shop.exception;
 
 public class CakeException extends Exception {
 

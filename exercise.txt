@@ -4,11 +4,11 @@
 
 CHAPTER 1: THE CAKE
 - I want to be able to make cake
-- I want to be able to specify color, type, size. At least three of each.
-- I want to be able to name my cake which by default should be a composite of its color, type, and size
+- I want to be able to specify color, types, sizes. At least three of each.
+- I want to be able to name my cake which by default should be a composite of its color, types, and sizes
     i.e. "large orange cheese cake"
 - If I don't like the default name of a cake, I want to be able to rename it myself
     i.e. "[YOUR_NAME]'s amazing cake"
-- I want to be able to get the price of the cake based on the size
+- I want to be able to get the price of the cake based on the sizes
 - Cakes expire, in one hour exactly. I want to be able to check how many more fresh minutes my cake has left.
     I never want to return less than zero.
