@@ -8,6 +8,9 @@ import lombok.Setter;
 public class Cake {
 
   private static final int TIME_TO_LIVE_MS = 5000;
+  private static final double SMALL_CAKE_PRICE = 20.00;
+  private static final double MEDIUM_CAKE_PRICE = 35.00;
+  private static final double LARGE_CAKE_PRICE = 50.00;
   private Color color;
   private Size size;
   private Type type;
@@ -15,45 +18,43 @@ public class Cake {
   private Double price;
   private long timeCakeMade;
 
-  public static Cake makeCake(Color color, Size size, Type type) {
-    Cake cake = new Cake();
-    cake.setColor(color);
-    cake.setSize(size);
-    cake.setType(type);
-    cake.setName(color, size, type);
-    cake.setTimeCakeMade(System.currentTimeMillis());
-    return cake;
+  public Cake(Color color, Size size, Type type) {
+    this.color = color;
+    this.size = size;
+    this.type = type;
+    setName(color, size, type);
+    setPriceBasedOnSize(size);
+    setTimeCakeMade(System.currentTimeMillis());
   }
 
-  public static Cake makeCake(Color color, Size size, Type type, String name) {
-    Cake cake = new Cake();
-    cake.setColor(color);
-    cake.setSize(size);
-    cake.setType(type);
-    cake.setName(name);
-    cake.setTimeCakeMade(System.currentTimeMillis());
-    return cake;
+  public Cake(Color color, Size size, Type type, String name) {
+    this.color = color;
+    this.size = size;
+    this.type = type;
+    this.name = name;
   }
 
   public void setName(Color color, Size size, Type type) {
     name = size.name() + " " + color.name() + " " + type.name();
   }
 
-  public Double setPriceBasedOnSize() {
-    Cake cake = makeCake(color, size, type);
-    if (cake.getSize().equals(Size.SMALL)) {
-      cake.setPrice(20.00);
-    } else if (cake.getSize().equals(Size.MEDIUM)) {
-      cake.setPrice(35.00);
-    } else if (cake.getSize().equals(Size.LARGE)) {
-      cake.setPrice(50.00);
-    }
-    return cake.getPrice();
+  public void rename(String name) {
+    setName(name);
   }
 
-  public static String checkHowMuchTimeLeft(Cake cake) {
+  public void setPriceBasedOnSize(Size size) {
+    if (size.equals(Size.SMALL)) {
+      setPrice(SMALL_CAKE_PRICE);
+    } else if (size.equals(Size.MEDIUM)) {
+      setPrice(MEDIUM_CAKE_PRICE);
+    } else if (size.equals(Size.LARGE)) {
+      setPrice(LARGE_CAKE_PRICE);
+    }
+  }
+
+  public String checkHowMuchTimeLeft() {
     long stop = System.currentTimeMillis();
-    long timePassed = stop - cake.getTimeCakeMade();
+    long timePassed = stop - getTimeCakeMade();
     long timeLeft;
 
     if (timePassed > TIME_TO_LIVE_MS) {
