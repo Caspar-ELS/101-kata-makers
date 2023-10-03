@@ -12,9 +12,8 @@ public class CakeShop {
   private List<Cake> cakes = new ArrayList<>();
   private double cash;
 
-  public Cake addCake(Cake cake) {
+  public void addCake(Cake cake) {
     cakes.add(cake);
-    return cake;
   }
 
   public int checkNumberOfCakes() {

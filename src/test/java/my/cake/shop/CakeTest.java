@@ -10,7 +10,7 @@ class CakeTest {
   @Test
   void shouldOverwriteDefaultNameIfNameChangedAfterMakingCake() {
     Cake cake = new Cake(Color.ORANGE, Size.LARGE, Type.CHEESECAKE);
-    cake.setName("Amazing cheesecake");
+    cake.rename("Amazing cheesecake");
     Assertions.assertEquals("Amazing cheesecake", cake.getName());
   }
 

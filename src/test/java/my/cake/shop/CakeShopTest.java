@@ -6,12 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 
 class CakeShopTest {
-
-  @Mock
-  Cake cake;
 
   @InjectMocks
   private CakeShop cakeShop;
@@ -23,7 +19,6 @@ class CakeShopTest {
 
   @Test
   void shouldHaveZeroCakesIfNoCakesAdded() {
-    Cake cake =new Cake(Color.BLUE, Size.MEDIUM, Type.CHOCOLATE_CAKE);
     int numberOfCakes = cakeShop.checkNumberOfCakes();
     Assertions.assertEquals(0, numberOfCakes);
   }
