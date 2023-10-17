@@ -11,27 +11,26 @@ public class CakeShop {
 
   private List<Cake> cakes = new ArrayList<>();
   private double cash;
+  private Inventory inventory;
+
+  public CakeShop() {
+    this.inventory = new Inventory();
+  }
+
+  public CakeShop(Inventory inventory) {
+    this.inventory = inventory;
+  }
 
   public void addCake(Cake cake) {
     cakes.add(cake);
+    inventory.update(cake);
   }
 
   public int checkNumberOfCakes() {
     return cakes.size();
   }
 
-  public Cake sellCakeOfColor(Color color) {
-    for (Cake cake : cakes) {
-      if (cake.getColor().equals(color)) {
-        cakes.remove(cake);
-        cash += cake.getPrice();
-        return cake;
-      }
-    }
-    return null;
-  }
-
-  public Cake sellCakeTo(Customer customer) throws CakeException {
+  public Cake sellCakeTo(Customer customer) {
     for (int i = 0; i < cakes.size(); i++) {
       Cake cake = cakes.get(i);
 
@@ -44,9 +43,12 @@ public class CakeShop {
 
       cakes.remove(cake);
       cash += cake.getPrice();
+      cash -= inventory.getCost();
       return cake;
     }
-    throw new CakeException("Can't find required cake in shop");
+    Cake newCake = new Cake(customer.getPreferredColor(), customer.getPreferredSize(), customer.getPreferredType());
+    addCake(newCake);
+    return sellCakeTo(customer);
   }
 
   public double checkCashRegister() {

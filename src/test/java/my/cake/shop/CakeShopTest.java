@@ -9,8 +9,10 @@ import org.mockito.InjectMocks;
 
 class CakeShopTest {
 
+  private final Inventory inventory = new Inventory();
+
   @InjectMocks
-  private CakeShop cakeShop;
+  private CakeShop cakeShop = new CakeShop(inventory);
 
   @BeforeEach
   public void setup() {
@@ -32,43 +34,7 @@ class CakeShopTest {
   }
 
   @Test
-  void shouldReturnListOfBlueCakes() {
-    Cake cake = new Cake(Color.BLUE, Size.MEDIUM, Type.CHOCOLATE_CAKE);
-    cakeShop.addCake(cake);
-    Assertions.assertEquals(cake, cakeShop.sellCakeOfColor(Color.BLUE));
-  }
-
-  @Test
-  void shouldReturnNullIfNoBlueCake() {
-    Cake cake = new Cake(Color.BLUE, Size.MEDIUM, Type.CHOCOLATE_CAKE);
-    cakeShop.addCake(cake);
-    Assertions.assertNull(cakeShop.sellCakeOfColor(Color.ORANGE));
-  }
-
-  @Test
-  void shouldRemoveBlueCakeFromTheShopAfterSelling() {
-    Cake cake = new Cake(Color.BLUE, Size.MEDIUM, Type.CHOCOLATE_CAKE);
-    cakeShop.addCake(cake);
-    cakeShop.sellCakeOfColor(Color.BLUE);
-    Assertions.assertEquals(0, cakeShop.checkNumberOfCakes());
-  }
-
-  @Test
-  void shouldHaveCorrectAmountAmountInTheCashRegister() {
-    Cake cake = new Cake(Color.BLUE, Size.MEDIUM, Type.CHOCOLATE_CAKE);
-    cakeShop.addCake(cake);
-    Cake cakeTwo = new Cake(Color.BLUE, Size.LARGE, Type.CHOCOLATE_CAKE);
-    cakeShop.addCake(cakeTwo);
-    Cake cakeThree = new Cake(Color.BLUE, Size.SMALL, Type.CHOCOLATE_CAKE);
-    cakeShop.addCake(cakeThree);
-    cakeShop.sellCakeOfColor(Color.BLUE);
-    cakeShop.sellCakeOfColor(Color.BLUE);
-    cakeShop.sellCakeOfColor(Color.BLUE);
-    Assertions.assertEquals(105.00, cakeShop.checkCashRegister());
-  }
-
-  @Test
-  void customerCanBuyCakeByColor() throws CakeException {
+  void customerCanBuyCakeByColor() {
     CakeShop shop = new CakeShop();
     Cake cake = new Cake(Color.WHITE, Size.SMALL, Type.CHOCOLATE_CAKE);
     shop.addCake(cake);
@@ -83,7 +49,7 @@ class CakeShopTest {
   }
 
   @Test
-  void customerCanBuyCakeByType() throws CakeException {
+  void customerCanBuyCakeByType() {
     CakeShop shop = new CakeShop();
     Cake cake = new Cake(Color.WHITE, Size.SMALL, Type.CHOCOLATE_CAKE);
     shop.addCake(cake);
@@ -98,7 +64,7 @@ class CakeShopTest {
   }
 
   @Test
- void customerCanBuyCakeByColorAndType() throws CakeException {
+ void customerCanBuyCakeByColorAndType() {
     CakeShop shop = new CakeShop();
     Cake cake = new Cake(Color.WHITE, Size.SMALL, Type.CHOCOLATE_CAKE);
     shop.addCake(cake);
@@ -114,11 +80,53 @@ class CakeShopTest {
   }
 
   @Test
-  void throwsExceptionWhenNoCakeToBuy() {
-    CakeShop shop = new CakeShop();
+  void shouldMakeNewCakeIfNoCakeToBuyAndUpdateCashRegister() {
+    Inventory inventory = new Inventory();
+    CakeShop shop = new CakeShop(inventory);
     Customer customer = Customer.builder()
         .preferredColor(Color.WHITE)
+        .preferredType(Type.CHOCOLATE_CAKE)
+        .preferredSize(Size.SMALL)
         .build();
-    Assertions.assertThrows(CakeException.class, () -> shop.sellCakeTo(customer));
+
+    Cake customersCake = shop.sellCakeTo(customer);
+    Assertions.assertEquals(customer.getPreferredColor(), customersCake.getColor());
+    Assertions.assertEquals(customer.getPreferredType(), customersCake.getType());
+    Assertions.assertEquals(customer.getPreferredSize(), customersCake.getSize());
+    Assertions.assertEquals(20, shop.checkCashRegister());
+  }
+
+  @Test
+  void shouldMakeNewCakeIfNoCakeToBuyAndRestockAndUpdateCashRegisterWithCakePriceAndRestockCost() {
+    inventory.setEggs(0);
+    CakeShop shop = new CakeShop(inventory);
+    Customer customer = Customer.builder()
+        .preferredColor(Color.WHITE)
+        .preferredType(Type.CHOCOLATE_CAKE)
+        .preferredSize(Size.SMALL)
+        .build();
+
+    Cake customersCake = shop.sellCakeTo(customer);
+    Assertions.assertEquals(customer.getPreferredColor(), customersCake.getColor());
+    Assertions.assertEquals(customer.getPreferredType(), customersCake.getType());
+    Assertions.assertEquals(customer.getPreferredSize(), customersCake.getSize());
+    Assertions.assertEquals(10, shop.checkCashRegister());
+  }
+
+  @Test
+  void shouldUpdateCashRegisterWithCakePriceIfNoRestockingRequired() {
+    Customer customerSmallCake = Customer.builder()
+        .preferredSize(Size.SMALL)
+        .preferredColor(Color.RED)
+        .preferredType(Type.CHOCOLATE_CAKE)
+        .build();
+    Customer customerMediumCake = Customer.builder()
+        .preferredSize(Size.MEDIUM)
+        .preferredColor(Color.RED)
+        .preferredType(Type.CHOCOLATE_CAKE)
+        .build();
+    cakeShop.sellCakeTo(customerSmallCake);
+    cakeShop.sellCakeTo(customerMediumCake);
+    Assertions.assertEquals(55.00, cakeShop.checkCashRegister());
   }
 }
