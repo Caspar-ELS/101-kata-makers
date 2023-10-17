@@ -1,7 +1,10 @@
 package my.cake.shop;
 
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
+import my.cake.shop.exception.InvalidCakeException;
 
 @Getter
 @Setter
@@ -36,8 +39,12 @@ public class Cake {
     return cake.getSize() + " " + cake.getColour() + " " + cake.getType();
   }
 
-  public String getPrice(String cakeSize) {
-    return cakeSize.equals("large") ? "£50" : "£20";
+  public int getCakePriceBasedOnSize(String cakeSize) throws InvalidCakeException {
+    try {
+      return cakePrices.get(cakeSize);
+    } catch (NullPointerException exception) {
+      throw new InvalidCakeException(exception);
+    }
   }
 
   public String getCakeExpiry(Long timeCreated) {
@@ -47,5 +54,13 @@ public class Cake {
     } else {
       return "Your cake expired :(";
     }
+  }
+
+  private static Map<String, Integer> cakePrices;
+  static {
+    cakePrices = new HashMap<>();
+    cakePrices.put("small", 20);
+    cakePrices.put("medium", 35);
+    cakePrices.put("large", 50);
   }
 }

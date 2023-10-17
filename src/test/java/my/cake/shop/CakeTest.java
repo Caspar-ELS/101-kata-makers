@@ -1,15 +1,18 @@
 package my.cake.shop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import my.cake.shop.exception.InvalidCakeException;
 import org.junit.jupiter.api.Test;
 
 class CakeTest {
 
   @Test
   void willCreateAnyCake() {
-    Cake cake = new Cake("Blue", "Chocolate", "Medium");
+    Cake cake = new Cake("Blue", "Chocolate", "medium");
 
-    assertEquals("Medium", cake.getSize());
+    assertEquals("medium", cake.getSize());
     assertEquals("Chocolate", cake.getType());
     assertEquals("Blue", cake.getColour());
   }
@@ -35,29 +38,36 @@ class CakeTest {
   }
 
   @Test
-  void willGetTheCorrectPriceOfALargeCake() {
+  void willGetTheCorrectPriceOfALargeCake() throws InvalidCakeException {
     Cake cake = new Cake("orange", "cheese cake", "large");
 
-    String expectedPrice = "£50";
-    String actualPrice = cake.getPrice(cake.getSize());
+    int expectedPrice = 50;
+    int actualPrice = cake.getCakePriceBasedOnSize(cake.getSize());
 
     assertEquals(expectedPrice, actualPrice);
 
   }
 
   @Test
-  void willGetTheCorrectPriceOfASmallCake() {
+  void willGetTheCorrectPriceOfASmallCake() throws InvalidCakeException {
     Cake cake = new Cake("orange", "cheese cake", "small");
 
-    String expectedPrice = "£20";
-    String actualPrice = cake.getPrice(cake.getSize());
+    int expectedPrice = 20;
+    int actualPrice = cake.getCakePriceBasedOnSize(cake.getSize());
 
     assertEquals(expectedPrice, actualPrice);
 
   }
 
   @Test
-  void willOutputHowManySecondsLeftBeforeTheCakeExpiresWhenCalledAfterLessThan5Seconds() throws InterruptedException {
+  void willThrowInvalidCakeExceptionWhenGettingPriceOfCakeSizeThatDoesNotExist() {
+    Cake cake = new Cake("orange", "cheese cake", "extra large");
+    assertThrows(InvalidCakeException.class, () -> cake.getCakePriceBasedOnSize(cake.getSize()));
+  }
+
+  @Test
+  void willOutputHowManySecondsLeftBeforeTheCakeExpiresWhenCalledAfterLessThan5Seconds()
+      throws InterruptedException {
     Cake cake = new Cake("orange", "cheese cake", "small");
 
     Thread.sleep(3000);
