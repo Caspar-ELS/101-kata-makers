@@ -60,7 +60,7 @@ class ShopTest {
 
   @SneakyThrows
   @Test
-  public void customerCanBuyCakeByColorAndType() {
+  public void customerCanBuyCakeByColorAndTypeAndSize() {
     Shop shop = new Shop();
     Cake cake = new Cake(Sizes.SMALL, Colors.WHITE, Types.CHOCOLATE);
     shop.add(cake);
@@ -70,20 +70,11 @@ class ShopTest {
     Customer customer = Customer.builder()
         .cakeType(Types.CHOCOLATE)
         .cakeColor(Colors.WHITE)
+        .cakeSize(Sizes.SMALL)
         .build();
 
     Assertions.assertEquals(cake, shop.sellCakeTo(customer));
     Assertions.assertEquals(0, shop.howMuchCake());
-  }
-
-  @SneakyThrows
-  @Test
-  public void throwsExceptionWhenNoCakeToBuy() {
-    Shop shop = new Shop();
-    Customer customer = Customer.builder()
-        .cakeColor(Colors.WHITE)
-        .build();
-    Assertions.assertThrows(CakeException.class, () -> shop.sellCakeTo(customer));
   }
 
   @SneakyThrows
@@ -124,5 +115,23 @@ class ShopTest {
     Thread.sleep(5000);
 
     Assertions.assertEquals(0, shop.howMuchCake());
+  }
+
+  @SneakyThrows
+  @Test
+  public void shouldCreateCakeForCustomerIfNotInShopAndBuyIngredients() {
+    Shop shop = new Shop();
+    Customer customer = Customer.builder()
+        .cakeColor(Colors.WHITE)
+        .cakeSize(Sizes.MEDIUM)
+        .cakeType(Types.CHOCOLATE)
+        .build();
+
+    shop.sellCakeTo(customer);
+    shop.sellCakeTo(customer);
+    shop.sellCakeTo(customer);
+    shop.sellCakeTo(customer);
+
+    Assertions.assertEquals(97, shop.howMuchProfit());
   }
 }

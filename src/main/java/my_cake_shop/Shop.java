@@ -11,14 +11,21 @@ public class Shop {
 
   private List<Cake> cakes = new ArrayList<>();
   private int profit = 0;
+  private final Inventory inventory;
 
   public Shop() {
     Thread thread = new Thread(this::continuouslyCheckIfCakeIsExpiresSoonAndRemove);
     thread.start();
+
+    this.inventory = new Inventory();
   }
 
   public int howMuchCake() {
     return cakes.size();
+  }
+
+  public int howMuchProfit() {
+    return profit;
   }
 
   public void add(Cake cake) {
@@ -35,6 +42,9 @@ public class Shop {
       if ((customer.getCakeType() != null) && cake.getTypes() != customer.getCakeType()) {
         continue;
       }
+      if ((customer.getCakeSize() != null) && cake.getSizes() != customer.getCakeSize()) {
+        continue;
+      }
 
       cakes = cakes.stream()
           .filter(cakesToKeep -> !cakesToKeep.getId().equals(cake.getId()))
@@ -44,15 +54,22 @@ public class Shop {
 
       return cake;
     }
-    throw new CakeException("Can't find required cake in shop");
+
+    return makeNewCake(customer);
+  }
+
+  private Cake makeNewCake(Customer customer) throws CakeException {
+    increaseProfitBy(-this.inventory.takeIngredientsForCakeAndReturnPrice(customer.getCakeSize()));
+
+    Cake cake = new Cake(customer.getCakeSize(), customer.getCakeColor(), customer.getCakeType());
+
+    increaseProfitBy(cake.getPrice());
+
+    return cake;
   }
 
   private void increaseProfitBy(int amount) {
     profit += amount;
-  }
-
-  public int howMuchProfit() {
-    return profit;
   }
 
   @SneakyThrows
