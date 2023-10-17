@@ -66,4 +66,59 @@ class CakeShopTest {
     cakeShop.sellCakeOfColor(Color.BLUE);
     Assertions.assertEquals(105.00, cakeShop.checkCashRegister());
   }
+
+  @Test
+  void customerCanBuyCakeByColor() throws CakeException {
+    CakeShop shop = new CakeShop();
+    Cake cake = new Cake(Color.WHITE, Size.SMALL, Type.CHOCOLATE_CAKE);
+    shop.addCake(cake);
+
+    Assertions.assertEquals(1, shop.checkNumberOfCakes());
+
+    Customer customer = Customer.builder()
+        .preferredColor(Color.WHITE)
+        .build();
+    Assertions.assertEquals(cake, shop.sellCakeTo(customer));
+    Assertions.assertEquals(0, shop.checkNumberOfCakes());
+  }
+
+  @Test
+  void customerCanBuyCakeByType() throws CakeException {
+    CakeShop shop = new CakeShop();
+    Cake cake = new Cake(Color.WHITE, Size.SMALL, Type.CHOCOLATE_CAKE);
+    shop.addCake(cake);
+
+    Assertions.assertEquals(1, shop.checkNumberOfCakes());
+
+    Customer customer = Customer.builder()
+        .preferredType(Type.CHOCOLATE_CAKE)
+        .build();
+    Assertions.assertEquals(cake, shop.sellCakeTo(customer));
+    Assertions.assertEquals(0, shop.checkNumberOfCakes());
+  }
+
+  @Test
+ void customerCanBuyCakeByColorAndType() throws CakeException {
+    CakeShop shop = new CakeShop();
+    Cake cake = new Cake(Color.WHITE, Size.SMALL, Type.CHOCOLATE_CAKE);
+    shop.addCake(cake);
+
+    Assertions.assertEquals(1, shop.checkNumberOfCakes());
+
+    Customer customer = Customer.builder()
+        .preferredColor(Color.WHITE)
+        .preferredType(Type.CHOCOLATE_CAKE)
+        .build();
+    Assertions.assertEquals(cake, shop.sellCakeTo(customer));
+    Assertions.assertEquals(0, shop.checkNumberOfCakes());
+  }
+
+  @Test
+  void throwsExceptionWhenNoCakeToBuy() {
+    CakeShop shop = new CakeShop();
+    Customer customer = Customer.builder()
+        .preferredColor(Color.WHITE)
+        .build();
+    Assertions.assertThrows(CakeException.class, () -> shop.sellCakeTo(customer));
+  }
 }

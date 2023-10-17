@@ -31,6 +31,24 @@ public class CakeShop {
     return null;
   }
 
+  public Cake sellCakeTo(Customer customer) throws CakeException {
+    for (int i = 0; i < cakes.size(); i++) {
+      Cake cake = cakes.get(i);
+
+      if ((customer.getPreferredColor() != null) && cake.getColor() != customer.getPreferredColor()) {
+        continue;
+      }
+      if ((customer.getPreferredType() != null) && cake.getType() != customer.getPreferredType()) {
+        continue;
+      }
+
+      cakes.remove(cake);
+      cash += cake.getPrice();
+      return cake;
+    }
+    throw new CakeException("Can't find required cake in shop");
+  }
+
   public double checkCashRegister() {
     return cash;
   }
