@@ -7,6 +7,7 @@ import static my.cake.shop.model.CakeColor.WHITE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import my.cake.shop.model.CakeSize;
 import org.junit.jupiter.api.Test;
 
 class CakeShopTest {
@@ -36,7 +37,7 @@ class CakeShopTest {
     CakeShop shop = new CakeShop();
     addCakes(shop);
     assertEquals(4, shop.getAvailableNumberOfCake());
-    Cake cake = new Cake(WHITE, "Cheese", "Small");
+    Cake cake = new Cake(WHITE, "Cheese", CakeSize.SMALL);
     Customer customer = new Customer(cake);
     assertEquals(cake, shop.sellCake(customer));
     assertEquals(3, shop.getAvailableNumberOfCake());
@@ -47,9 +48,8 @@ class CakeShopTest {
     CakeShop shop = new CakeShop();
     addCakes(shop);
     assertEquals(4, shop.getAvailableNumberOfCake());
-    Cake cake = new Cake(PINK, "Cheese", "Small");
+    Cake cake = new Cake(PINK, "Cheese", CakeSize.SMALL);
     Customer customer = new Customer(cake);
-    assertNull(shop.sellCake(customer));
     assertEquals(4, shop.getAvailableNumberOfCake());
   }
 
@@ -58,8 +58,8 @@ class CakeShopTest {
     CakeShop shop = new CakeShop();
     addCakes(shop);
     assertEquals(4, shop.getAvailableNumberOfCake());
-    shop.sellCake(new Customer(new Cake(WHITE, "Cheese", "Small")));
-    shop.sellCake(new Customer(new Cake(BLUE, "Cheese", "Large")));
+    shop.sellCake(new Customer(new Cake(WHITE, "Cheese", CakeSize.SMALL)));
+    shop.sellCake(new Customer(new Cake(BLUE, "Cheese", CakeSize.LARGE)));
     assertEquals(2, shop.getAvailableNumberOfCake());
     assertEquals(70, shop.getAmountCollected());
   }
@@ -72,11 +72,26 @@ class CakeShopTest {
     Thread.sleep(5000);
     assertEquals(0, shop.getAvailableNumberOfCake());
   }
+
+  @Test
+  void shouldSellCakeToTheCustomerWhenTheCakeIsNotAvailableInShop() {
+    CakeShop shop = new CakeShop();
+    addCakes(shop);
+    assertEquals(4, shop.getAvailableNumberOfCake());
+    Cake cake = new Cake(PINK, "Cheese", CakeSize.LARGE);
+    Customer customer = new Customer(cake);
+    shop.sellCake(customer);
+    shop.sellCake(customer);
+    shop.sellCake(customer);
+    assertEquals(4, shop.getAvailableNumberOfCake());
+    assertEquals(107, shop.getAmountCollected());
+  }
+
   private void addCakes(CakeShop shop) {
-    shop.addCakesToTheShop(new Cake(WHITE, "Cheese", "Small"));
-    shop.addCakesToTheShop(new Cake(WHITE, "Cheese", "Small"));
-    shop.addCakesToTheShop(new Cake(BLUE, "Cheese", "Large"));
-    shop.addCakesToTheShop(new Cake(RED, "Strawberry", "Large"));
+    shop.addCakesToTheShop(new Cake(WHITE, "Cheese", CakeSize.SMALL));
+    shop.addCakesToTheShop(new Cake(WHITE, "Cheese", CakeSize.SMALL));
+    shop.addCakesToTheShop(new Cake(BLUE, "Cheese", CakeSize.LARGE));
+    shop.addCakesToTheShop(new Cake(RED, "Strawberry", CakeSize.LARGE));
   }
 
   private void addCakesBasedOnNumber(CakeShop shop, int expectedNumber) {

@@ -8,6 +8,7 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import my.cake.shop.model.CakeColor;
+import my.cake.shop.model.CakeSize;
 
 @Getter
 @Setter
@@ -15,9 +16,12 @@ public class Cake {
 
   private CakeColor color;
   private String type;
-  private String size;
+  private CakeSize size;
   private String name;
-  private Map<String, Integer> priceList = Map.of("Small", 20, "Large", 50);
+  private Map<CakeSize, Integer> priceList = Map.of(
+      CakeSize.SMALL, 20,
+      CakeSize.MEDIUM, 30,
+      CakeSize.LARGE, 50);
   private Duration expiresIn;
   private long cakePreparedTime;
 
@@ -26,7 +30,7 @@ public class Cake {
     this.expiresIn = Duration.of(5, ChronoUnit.SECONDS);
   }
 
-  public Cake(CakeColor cakeColor, String cakeType, String cakeSize) {
+  public Cake(CakeColor cakeColor, String cakeType, CakeSize cakeSize) {
     this();
     this.color = cakeColor;
     this.type = cakeType;

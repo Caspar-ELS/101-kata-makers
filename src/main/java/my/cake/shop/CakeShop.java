@@ -6,11 +6,14 @@ import lombok.Getter;
 
 @Getter
 public class CakeShop {
+
   private final List<Cake> cakes;
   private long amountCollected;
+  private Inventory inventory;
 
   public CakeShop(){
-    cakes = new ArrayList<>();
+    this.cakes = new ArrayList<>();
+    this.inventory = new Inventory();
   }
 
   public void addCakesToTheShop(Cake cake){
@@ -30,8 +33,17 @@ public class CakeShop {
       amountCollected += cake.getCakePrice();
       this.cakes.remove(cake);
       return cake;
+    }else{
+      return makeCakeFromIngredients(cake);
     }
-  return null;
+
+  }
+
+  private Cake makeCakeFromIngredients(Cake cake) {
+    amountCollected += cake.getCakePrice();
+    inventory.makeCakeFromIngredients(cake.getSize());
+   amountCollected -= inventory.getRestockingCost();
+    return cake;
   }
 
 }

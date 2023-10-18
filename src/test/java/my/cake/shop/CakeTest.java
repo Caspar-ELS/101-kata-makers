@@ -4,20 +4,21 @@ import static my.cake.shop.model.CakeColor.BLUE;
 import static my.cake.shop.model.CakeColor.WHITE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import my.cake.shop.model.CakeSize;
 import org.junit.jupiter.api.Test;
 
 class CakeTest {
 
   @Test
   void testWhiteColorSmallCake(){
-    Cake myCake = new Cake(WHITE, "Cheese", "Small");
+    Cake myCake = new Cake(WHITE, "Cheese", CakeSize.SMALL);
     assertEquals(WHITE, myCake.getColor());
   }
 
   @Test
   void testCakeNameWithColorSizeAndTypeOfCake(){
-    Cake myCake = new Cake(BLUE, "Cheese", "Large");
-    assertEquals("Large BLUE Cheese cake", myCake.getName());
+    Cake myCake = new Cake(BLUE, "Cheese", CakeSize.LARGE);
+    assertEquals("LARGE BLUE Cheese cake", myCake.getName());
   }
 
   @Test
@@ -31,7 +32,7 @@ class CakeTest {
   @Test
   void testCakePriceBasedOnCakeSize(){
     Cake cake = new Cake();
-    cake.setSize("Small");
+    cake.setSize(CakeSize.SMALL);
     assertEquals("£20", cake.getPrice());
   }
 
