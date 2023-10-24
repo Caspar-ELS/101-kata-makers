@@ -1,15 +1,19 @@
 package my.cake.shop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import my.cake.shop.exception.InvalidCakeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 class ShopTest {
+
+  @Mock
+  private Inventory inventory;
 
   @InjectMocks
   private Shop shop;
@@ -20,7 +24,7 @@ class ShopTest {
   }
 
   @Test
-  void willReturnTheNumberOfCakesSpecified() throws InvalidCakeException {
+  void willReturnTheNumberOfCakesSpecified() {
     Cake chocolateCake = new Cake("orange", "chocolate", "large");
     Cake carrotCake = new Cake("purple", "carrot", "small");
     Cake cheeseCake = new Cake("pink", "cheese", "large");
@@ -44,24 +48,15 @@ class ShopTest {
     Cake chocolateCake = new Cake("orange", "chocolate", "large");
     Cake carrotCake = new Cake("purple", "carrot", "small");
     Cake cheeseCake = new Cake("blue", "cheese", "large");
-
     addThreeCakesForSale(chocolateCake, carrotCake, cheeseCake);
 
-    Cake actualCake = shop.findCakeWithSpecificColour("blue");
+    Customer customer = new Customer("blue", "sponge", "large");
 
-    assertEquals("blue", actualCake.getColour());
-    assertEquals(cheeseCake, actualCake);
-  }
+    Cake actualCake = shop.sellCakeWithSpecificColour(customer);
 
-  @Test
-  void willNotRetrieveACakeIfNoneSpecifiedAreInTheShop() throws InvalidCakeException {
-    Cake chocolateCake = new Cake("orange", "chocolate", "large");
-    Cake carrotCake = new Cake("purple", "carrot", "small");
-
-    shop.addCake(chocolateCake);
-    shop.addCake(carrotCake);
-
-    assertNull(shop.findCakeWithSpecificColour("blue"));
+    assertEquals(cheeseCake.getColour(), actualCake.getColour());
+    assertEquals(cheeseCake.getType(), actualCake.getType());
+    assertEquals(cheeseCake.getSize(), actualCake.getSize());
   }
 
   @Test
@@ -70,9 +65,11 @@ class ShopTest {
     Cake carrotCake = new Cake("purple", "carrot", "small");
     Cake cheeseCake = new Cake("blue", "cheese", "large");
 
+    Customer customer = new Customer("blue", "sponge", "large");
+
     addThreeCakesForSale(chocolateCake, carrotCake, cheeseCake);
 
-    shop.findCakeWithSpecificColour("blue");
+    shop.sellCakeWithSpecificColour(customer);
 
     assertEquals(2, shop.getCakes().size());
   }
@@ -82,13 +79,28 @@ class ShopTest {
     Cake chocolateCake = new Cake("orange", "chocolate", "large");
     Cake carrotCake = new Cake("purple", "carrot", "small");
     Cake cheeseCake = new Cake("blue", "cheese", "large");
-
     addThreeCakesForSale(chocolateCake, carrotCake, cheeseCake);
 
-    shop.findCakeWithSpecificColour("blue");
-    shop.findCakeWithSpecificColour("purple");
+    Customer customerOne = new Customer("blue", "sponge", "large");
+    Customer customerTwo = new Customer("purple", "sponge", "large");
+
+    shop.sellCakeWithSpecificColour(customerOne);
+    shop.sellCakeWithSpecificColour(customerTwo);
 
     assertEquals(70, shop.getAmountInCashRegister());
+  }
+
+  @Test
+  void willDeductCostsOfRestockingInventoryFromCashRegister() throws InvalidCakeException {
+    Customer customerOne = new Customer("blue", "sponge", "large");
+    Customer customerTwo = new Customer("purple", "sponge", "large");
+
+    when(inventory.getIngredientsForCake(customerOne.getSizePreference())).thenReturn(0);
+    shop.sellCakeWithSpecificColour(customerOne);
+    when(inventory.getIngredientsForCake(customerTwo.getSizePreference())).thenReturn(13);
+    shop.sellCakeWithSpecificColour(customerTwo);
+
+    assertEquals(87, shop.getAmountInCashRegister());
   }
 
   private void addThreeCakesForSale(Cake chocolateCake, Cake carrotCake, Cake cheeseCake) {

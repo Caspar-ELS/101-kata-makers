@@ -42,7 +42,7 @@ class CakeTest {
     Cake cake = new Cake("orange", "cheese cake", "large");
 
     int expectedPrice = 50;
-    int actualPrice = cake.getCakePriceBasedOnSize(cake.getSize());
+    int actualPrice = cake.getCakePrice(cake.getSize());
 
     assertEquals(expectedPrice, actualPrice);
 
@@ -53,7 +53,7 @@ class CakeTest {
     Cake cake = new Cake("orange", "cheese cake", "small");
 
     int expectedPrice = 20;
-    int actualPrice = cake.getCakePriceBasedOnSize(cake.getSize());
+    int actualPrice = cake.getCakePrice(cake.getSize());
 
     assertEquals(expectedPrice, actualPrice);
 
@@ -62,7 +62,8 @@ class CakeTest {
   @Test
   void willThrowInvalidCakeExceptionWhenGettingPriceOfCakeSizeThatDoesNotExist() {
     Cake cake = new Cake("orange", "cheese cake", "extra large");
-    assertThrows(InvalidCakeException.class, () -> cake.getCakePriceBasedOnSize(cake.getSize()));
+
+    assertThrows(InvalidCakeException.class, () -> cake.getCakePrice(cake.getSize()));
   }
 
   @Test

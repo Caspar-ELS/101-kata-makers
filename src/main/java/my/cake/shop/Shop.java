@@ -12,6 +12,7 @@ public class Shop {
 
   private List<Cake> cakes = new ArrayList<>();
   private int cashRegister;
+  private Inventory inventory;
 
   public void addCake(Cake cake) {
     cakes.add(cake);
@@ -21,15 +22,26 @@ public class Shop {
     return cakes.size();
   }
 
-  public Cake findCakeWithSpecificColour(String colour) throws InvalidCakeException {
-    for (Cake cake : cakes) {
-      if (cake.getColour().equals(colour)) {
-        cakes.remove(cake);
-        cashRegister += cake.getCakePriceBasedOnSize(cake.getSize());
-        return cake;
+  public Cake sellCakeWithSpecificColour(Customer customer) throws InvalidCakeException {
+    if (!cakes.isEmpty()) {
+      for (Cake cake : cakes) {
+        if (cake.getColour().equals(customer.getColourPreference())) {
+          cakes.remove(cake);
+          cashRegister += cake.getCakePrice(cake.getSize());
+          return cake;
+        }
       }
     }
-    return null;
+      Cake cake = bakeNewCakeAndDeductCosts(customer);
+      cashRegister += cake.getCakePrice(cake.getSize());
+      return cake;
+  }
+
+  private Cake bakeNewCakeAndDeductCosts(Customer customer) {
+    Cake cake = new Cake(customer.getColourPreference(), customer.getTypePreference(),
+        customer.getSizePreference());
+    cashRegister -= inventory.getIngredientsForCake(cake.getSize());
+    return cake;
   }
 
   public int getAmountInCashRegister() {

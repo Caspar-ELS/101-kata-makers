@@ -3,11 +3,9 @@ package my.cake.shop;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
-import lombok.Setter;
 import my.cake.shop.exception.InvalidCakeException;
 
 @Getter
-@Setter
 public class Cake {
 
   private String colour;
@@ -39,7 +37,7 @@ public class Cake {
     return cake.getSize() + " " + cake.getColour() + " " + cake.getType();
   }
 
-  public int getCakePriceBasedOnSize(String cakeSize) throws InvalidCakeException {
+  public int getCakePrice(String cakeSize) throws InvalidCakeException {
     try {
       return cakePrices.get(cakeSize);
     } catch (NullPointerException exception) {
