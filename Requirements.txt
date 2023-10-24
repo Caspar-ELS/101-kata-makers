@@ -1,0 +1,38 @@
+Day 1
+1. I want to be able to specify color, type, size. At least three of each.
+2. I want to be able to name my cake which by default should be a composite of its color, type, and size
+       i.e. "large orange cheese cake"
+3. I want to be able to get the price of the cake based on the size
+       the biggest possible cake should be 50 pounds
+       the smallest possible cake should be 20 pounds
+4. Cakes expire, in one hour exactly. I want to be able to check how many more fresh minutes my cake has left.
+       I never want to return less than zero
+
+Day 2
+1. I want to start a cake shop, this means I need to start putting cake in my cake shop to sell.
+	I want to be able to put cake in a shop, and retrieve how much cake I have in that shop.
+	If I add 3 cake, I want to get the number 3 back
+	If I add 7 cake, I want to get the number 7 back
+	If I add no cake, I want to get the number 0 back
+2. The shop will receive customers
+	Customers can have specifications for cakes around the color
+	i.e. If my customer wants an [COLOR] cake, and my shop contains a [COLOR] cake, return that cake
+	This should also remove that cake from our shop, as we just sold our cake!
+3. Let's make sure that in the shop we are able to keep track of how much money we received from selling cakes
+
+Day 3
+1.I want to at least be able to check how much of each ingredient of eggs, sugar, and flower are in my inventory
+  by default my inventory will contain 12 eggs, 1000 grams of sugar, and 2000 grams of flour
+2.I want to be able to take from my inventory the ingredients required to make a small cake
+  a small cake uses 2 eggs, 250 grams of sugar, and 450 grams of flour
+  after retrieving the ingredients from the inventory, I should be able to verify that there is now less ingredients left
+3.I want to do the same as previously, but for medium and large cakes
+  a medium cake uses 3 eggs, 350 grams of sugar, and 600 grams of flour
+  a large cake uses 4 eggs, 500 grams of sugar, and 800 grams of flour
+4.If my inventory gets low on any ingredient, I want it to automatically restock this ingredient by adding an amount equal to
+  the starting amount of the ingredient. On making a cake, I want the inventory to tell me how much restocking has cost me
+  12 eggs cost 10
+  1000 grams of sugar costs 13
+  2000 grams of flour costs 30
+5.Back to the shop! When we don't have a customer's cake already in the shop, I want to make the cake for them on the spot.
+  I want to use the inventory to verify what it cost to make the cake, if anything, and deduce that from my total profit.
