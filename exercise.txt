@@ -1,0 +1,4 @@
+- 5 minutes
+- fast
+- small tests
+- don't overthink
