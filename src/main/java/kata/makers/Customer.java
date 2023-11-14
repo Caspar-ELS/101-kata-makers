@@ -1,36 +1,22 @@
 package kata.makers;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class Customer {
-  String firstName;
-  String lastName;
-  String emailAddress;
+  private String firstName;
+  private String lastName;
+  private String emailAddress;
 
-  public Customer(String firstName, String lastName, String emailAddress){
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.emailAddress = emailAddress;
+  public String getFullName() {
+      return firstName + ", " + lastName.toUpperCase();
   }
 
-  public void setFirstName(String firstName){
-    this.firstName = firstName;
+  public boolean validateEmail() {
+    return true;
   }
-  public String getFirstName(){
-    return this.firstName;
-  }
-
-  public void setLastName(String lastName){
-    this.lastName = lastName;
-  }
-  public String getLastName(){
-    return this.lastName;
-  }
-
-  public void setEmailAddress(String emailAddress){
-    this.emailAddress = emailAddress;
-  }
-
-  public String getEmailAddress(){
-    return this.emailAddress;
-  }
-
 }
