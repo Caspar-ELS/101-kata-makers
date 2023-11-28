@@ -7,7 +7,7 @@ Requirements:
 - separator can be any string but the string should have length = 1
   - if the separator is empty / null / having length > 1, throw an exception
 
-you may assume there only number and delimiter will be appeared in the function
+you may assume there only number and delimiter will be appeared in the function parameter
 
 Hint: `Pattern.quote()` may help, it is a function for converting reserved character in regex in normal string
 
