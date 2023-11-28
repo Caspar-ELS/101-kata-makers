@@ -13,8 +13,8 @@ For example: `calculate("1]2]3", "]")`
 Hint: `Pattern.quote()` may help, it is a function for converting reserved character in regex in normal string
 
 ### 2. Create a class called `ShoppingCart`
-- has 1 member variable containing list of product price (you may assume the price may not be integer)
-- implement function to add product to the list
+- has 1 member variable containing list of product price (you may assume the price may not only be integer, i.e.: the input maybe include floating point!(12, 12.3, 12.68 can be the price))
+- implement function to add product price to the list
 - implement function to calculate function to calculate current total price
   - e.g.: added 3 items with price 10, 20, 30, when calculate total price, it should return 60
 
