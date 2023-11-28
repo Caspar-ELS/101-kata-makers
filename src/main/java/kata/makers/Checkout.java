@@ -11,20 +11,20 @@ public class Checkout {
     } else if (numbersString.contains("\n")) {
       return calculateSumForNewLineSeparatedNumbers(numbersString);
     } else {
-      throw new InvalidCharacterException("Cannot accept one character");
+      throw new InvalidCharacterException("Cannot accept single character");
     }
   }
 
   private static int calculateSumForCommaSeparatedNumbers(String numbersString) throws Exception {
     if (numbersString.endsWith(",")) {
-      throw new InvalidCharacterException("Cannot ends with comma");
+      throw new InvalidCharacterException("Cannot end with comma");
     }
     return Arrays.stream(numbersString.split(",")).mapToInt(Integer::valueOf).sum();
   }
 
   private static int calculateSumForNewLineSeparatedNumbers(String numbersString) throws Exception {
     if (numbersString.endsWith("\n")) {
-      throw new InvalidCharacterException("Cannot ends with new line");
+      throw new InvalidCharacterException("Cannot end with new line");
     }
     return Arrays.stream(numbersString.split("\n")).mapToInt(Integer::valueOf).sum();
   }
