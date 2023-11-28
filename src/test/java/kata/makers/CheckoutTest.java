@@ -5,17 +5,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-public class CheckoutTest {
+class CheckoutTest {
 
-  @Test
+  @ParameterizedTest
+  @ValueSource(strings ={"1,2,3", "1,2,,3", "1p2p3"})
   void shouldReturnSumOfStringNumbers() throws Exception {
     Checkout checkout = new Checkout();
     Assertions.assertEquals(6, checkout.calculateSum("1,2,3"));
   }
 
-//  @Test
   @ParameterizedTest
-  @ValueSource(strings ={"1,", "1\n"})
+  @ValueSource(strings ={"1,", "1\n", "1p", "1%", "p", "%"})
   void shouldNotAcceptInvalidCharacterAtTheEnd(String keyword) {
     Checkout checkout = new Checkout();
     Assertions.assertThrows(InvalidCharacterException.class, () -> checkout.calculateSum(keyword));
