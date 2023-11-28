@@ -8,6 +8,7 @@ Requirements:
   - if the separator is empty / null / having length > 1, throw an exception
 
 you may assume there only number and delimiter will be appeared in the function parameter
+For example: `calculate("1]2]3", "]")`
 
 Hint: `Pattern.quote()` may help, it is a function for converting reserved character in regex in normal string
 
