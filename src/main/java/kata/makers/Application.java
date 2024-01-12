@@ -1,7 +1,9 @@
 package kata.makers;
 
+import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
-import kata.makers.service.DemoService;
+import kata.makers.service.EncryptionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,10 +16,14 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class Application implements CommandLineRunner {
 
   @Autowired
-  DemoService demoService;
+  EncryptionService encryptionService;
 
-  String input;
-  String secondInput;
+  String plainText;
+  int algorithmChoice;
+  String jasyptPassword;
+
+  private Map<Integer, String> algorithmMap = Map.of(1, "PBEWithMD5AndDES", 2,
+      "PBEWITHHMACSHA512ANDAES_256");
 
   public static void main(String[] args) {
     ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
@@ -27,22 +33,36 @@ public class Application implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    // sample code for getting input
     Scanner scanner = new Scanner(System.in);
-    System.out.println("What your input?");
+    System.out.println("Enter plain text you would like to encrypt: ");
     if (scanner.hasNext()) {
-      input = scanner.nextLine();
+      plainText = scanner.nextLine();
     }
 
-    System.out.println("What your second input?");
+    System.out.println(
+        "Choose algorithm: Press 1 for \"PBEWithMD5AndDES\" and 2 for \"PBEWITHHMACSHA512ANDAES_256\"");
     if (scanner.hasNext()) {
-      secondInput = scanner.nextLine();
+      algorithmChoice = Integer.parseInt(scanner.nextLine());
     }
 
-    log.info("Input: {}", input);
-    log.info("Second Input: {}", secondInput);
+    String algorithm = getAlgorithmByChoice(algorithmChoice);
+    if (Objects.isNull(algorithm)) {
+      System.out.println("Invalid choice of algorithm, please try again");
+      return;
+    }
 
-    // sample code for autowiring a service
-    demoService.foo();
+    System.out.println("Enter your jasypt password");
+    if (scanner.hasNext()) {
+      jasyptPassword = scanner.nextLine();
+    }
+
+    String cipherText = encryptionService.encryptWithParameter(plainText, algorithm,
+        jasyptPassword);
+    System.out.println("Encrypted password is: " + cipherText);
+
+  }
+
+  private String getAlgorithmByChoice(int choice) {
+    return algorithmMap.get(choice);
   }
 }
