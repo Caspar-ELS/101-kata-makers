@@ -1,5 +1,6 @@
 package kata.makers;
 
+import java.util.Objects;
 import java.util.Scanner;
 import kata.makers.service.DemoService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +17,7 @@ public class Application implements CommandLineRunner {
   @Autowired
   DemoService demoService;
 
-  String input;
-  String secondInput;
+  private String userChoice;
 
   public static void main(String[] args) {
     ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
@@ -25,24 +25,30 @@ public class Application implements CommandLineRunner {
     System.exit(exitCode);
   }
 
-  @Override
-  public void run(String... args) {
-    // sample code for getting input
+  private String encryptOrDecrypt() {
     Scanner scanner = new Scanner(System.in);
-    System.out.println("What your input?");
+    System.out.println("""
+            What's would you like to do? Enter the number:\s
+            1. encrypt
+            2. decrypt
+            """);
     if (scanner.hasNext()) {
-      input = scanner.nextLine();
+      userChoice = scanner.nextLine();
+    }
+    return userChoice;
+  }
+
+  @Override
+  public void run(String... args) throws Exception {
+
+    userChoice = encryptOrDecrypt();
+    if (userChoice.equals("1")) {
+      demoService.encrypt();
+    } else if (userChoice.equals("2")) {
+      demoService.decrypt();
+    } else {
+      log.info("Incorrect input.");
     }
 
-    System.out.println("What your second input?");
-    if (scanner.hasNext()) {
-      secondInput = scanner.nextLine();
-    }
-
-    log.info("Input: {}", input);
-    log.info("Second Input: {}", secondInput);
-
-    // sample code for autowiring a service
-    demoService.foo();
   }
 }
