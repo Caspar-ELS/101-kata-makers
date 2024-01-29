@@ -1,8 +1,8 @@
 package kata.makers;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
+import kata.makers.service.DecryptionService;
 import kata.makers.service.EncryptionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +17,12 @@ public class Application implements CommandLineRunner {
 
   @Autowired
   EncryptionService encryptionService;
+  @Autowired
+  DecryptionService decryptionService;
 
-  String plainText;
-  int algorithmChoice;
-  String jasyptPassword;
-
-  private Map<Integer, String> algorithmMap = Map.of(1, "PBEWithMD5AndDES", 2,
-      "PBEWITHHMACSHA512ANDAES_256");
+  private static final String ENCRYPT = "ENCRYPT";
+  private static final String DECRYPT = "DECRYPT";
+  int actionChoice;
 
   public static void main(String[] args) {
     ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
@@ -34,35 +33,48 @@ public class Application implements CommandLineRunner {
   @Override
   public void run(String... args) {
     Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter plain text you would like to encrypt: ");
+
+    System.out.println("Please choose your action: Enter 1 for \"Encrypt\"; 2 for \"Decrypt\"");
     if (scanner.hasNext()) {
-      plainText = scanner.nextLine();
+      actionChoice = Integer.parseInt(scanner.nextLine());
     }
 
-    System.out.println(
-        "Choose algorithm: Press 1 for \"PBEWithMD5AndDES\" and 2 for \"PBEWITHHMACSHA512ANDAES_256\"");
-    if (scanner.hasNext()) {
-      algorithmChoice = Integer.parseInt(scanner.nextLine());
+    String action = getActionByChoice(actionChoice);
+    if (Objects.isNull(action)) {
+      System.out.println("Invalid option of action, please try again");
+    } else {
+      switch (action) {
+        case ENCRYPT -> {
+          try {
+            System.out.printf("Encrypted text is: %s", encryptionService.process());
+          } catch (Exception exception) {
+            System.out.println(String.format("Error when encrypting: %s", exception.getMessage()));
+          }
+        }
+        case DECRYPT -> {
+          try {
+            decryptionService.process();
+          } catch (Exception exception) {
+            System.out.println(String.format("Error when decrypting: %s", exception.getMessage()));
+          }
+        }
+      }
     }
-
-    String algorithm = getAlgorithmByChoice(algorithmChoice);
-    if (Objects.isNull(algorithm)) {
-      System.out.println("Invalid choice of algorithm, please try again");
-      return;
-    }
-
-    System.out.println("Enter your jasypt password");
-    if (scanner.hasNext()) {
-      jasyptPassword = scanner.nextLine();
-    }
-
-    String cipherText = encryptionService.encryptWithParameter(plainText, algorithm,
-        jasyptPassword);
-    System.out.println("Encrypted password is: " + cipherText);
 
   }
 
-  private String getAlgorithmByChoice(int choice) {
-    return algorithmMap.get(choice);
+  private String getActionByChoice(int actionChoice) {
+    switch (actionChoice) {
+      case 1 -> {
+        return ENCRYPT;
+      }
+      case 2 -> {
+        return DECRYPT;
+      }
+      default -> {
+        return null;
+      }
+    }
   }
+
 }

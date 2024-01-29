@@ -10,22 +10,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EncryptionService {
+public class DecryptionService {
 
   @Autowired
   AwsSecretManagerService awsSecretManagerService;
+
   private Map<Integer, String> algorithmMap = Map.of(1, "PBEWithMD5AndDES", 2,
       "PBEWITHHMACSHA512ANDAES_256");
 
-  public String process() throws Exception {
-    String plainText = "";
+  public void process() throws Exception {
+    String cipherText = "";
     Integer algorithmChoice = null;
     String environment = "";
 
     Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter plain text you would like to encrypt: ");
+    System.out.println("Enter plain text you would like to decrypt: ");
     if (scanner.hasNext()) {
-      plainText = scanner.nextLine();
+      cipherText = scanner.nextLine();
     }
 
     System.out.println(
@@ -55,7 +56,7 @@ public class EncryptionService {
       encryptor.setIvGenerator(new RandomIvGenerator());
     }
 
-    return encryptor.encrypt(plainText);
+    System.out.println(String.format("Decrypted text is: %s", encryptor.decrypt(cipherText)));
   }
 
   private String getAlgorithmByChoice(int choice) {
