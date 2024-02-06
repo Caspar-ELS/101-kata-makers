@@ -1,7 +1,9 @@
 package kata.makers;
 
+import java.io.IOException;
 import java.util.Scanner;
-import kata.makers.service.DemoService;
+import kata.makers.service.ComparisonService;
+import kata.makers.service.LineComparisonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,7 +16,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class Application implements CommandLineRunner {
 
   @Autowired
-  DemoService demoService;
+  LineComparisonService lineComparisonService;
+
+  @Autowired
+  ComparisonService comparisonService;
 
   String input;
   String secondInput;
@@ -26,23 +31,9 @@ public class Application implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) {
+  public void run(String... args) throws IOException {
     // sample code for getting input
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("What your input?");
-    if (scanner.hasNext()) {
-      input = scanner.nextLine();
-    }
 
-    System.out.println("What your second input?");
-    if (scanner.hasNext()) {
-      secondInput = scanner.nextLine();
-    }
-
-    log.info("Input: {}", input);
-    log.info("Second Input: {}", secondInput);
-
-    // sample code for autowiring a service
-    demoService.foo();
+    comparisonService.findDifferentBetweenFiles("<PLEASE_CHANGE_IT_FILE_PATH_1>", "<PLEASE_CHANGE_IT_FILE_PATH_2>");
   }
 }
