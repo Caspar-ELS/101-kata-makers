@@ -1,7 +1,7 @@
 package kata.makers;
 
-import java.util.Scanner;
 import kata.makers.service.DemoService;
+import kata.makers.service.FileReadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,10 +14,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class Application implements CommandLineRunner {
 
   @Autowired
-  DemoService demoService;
+  private DemoService demoService;
 
-  String input;
-  String secondInput;
+  @Autowired
+  private FileReadService fileReadService;
 
   public static void main(String[] args) {
     ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
@@ -27,22 +27,8 @@ public class Application implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    // sample code for getting input
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("What your input?");
-    if (scanner.hasNext()) {
-      input = scanner.nextLine();
-    }
 
-    System.out.println("What your second input?");
-    if (scanner.hasNext()) {
-      secondInput = scanner.nextLine();
-    }
+    fileReadService.compareContent("src/main/resources/firstFile", "src/main/resources/secondFile");
 
-    log.info("Input: {}", input);
-    log.info("Second Input: {}", secondInput);
-
-    // sample code for autowiring a service
-    demoService.foo();
   }
 }
