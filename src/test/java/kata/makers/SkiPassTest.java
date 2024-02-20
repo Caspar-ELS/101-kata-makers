@@ -47,4 +47,6 @@ class SkiPassTest {
     assertFalse(lift.openGate(skiPass));
   }
 
+  // TODO: add edge cases (ski pass already exists error, ski pass not found error)
+
 }
