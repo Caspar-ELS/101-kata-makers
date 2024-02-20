@@ -5,6 +5,11 @@ import kata.makers.model.SkiPass;
 public class Lift {
 
   public boolean openGate(SkiPass skiPass) {
-    return true;
+    if (skiPass.getRemainingRides() >= 1) {
+      skiPass.reduceRemainingRides();
+      return true;
+    } else {
+      return false;
+    }
   }
 }
