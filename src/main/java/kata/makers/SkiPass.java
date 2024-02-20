@@ -1,7 +1,13 @@
 package kata.makers;
 
+import lombok.Getter;
+
+@Getter
 public class SkiPass {
-  public static String delete() {
-    return "Delete me!";
+
+  private final Long id;
+
+  public SkiPass(long nextId) {
+    this.id = nextId;
   }
 }
