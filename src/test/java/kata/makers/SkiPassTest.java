@@ -31,7 +31,7 @@ class SkiPassTest {
   }
 
   @Test
-  public void userCanOnlyUseSkiPassToRideLiftFiveTimes() {
+  public void userCanOnlyUseSkiPassToRideLiftExactlyFiveTimes() {
     SkiPassControl skiPassControl = new SkiPassControl();
 
     Shop shop = new Shop(skiPassControl);
