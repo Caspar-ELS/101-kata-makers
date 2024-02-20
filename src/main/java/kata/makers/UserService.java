@@ -8,7 +8,7 @@ public class UserService {
 
   public void buySkiPass(User user) {
 
-    user.setValidPass(true);
+    user.setPassBought(true);
     user.setSkiPass(new SkiPass());
   }
 
@@ -21,6 +21,6 @@ public class UserService {
   }
 
   private boolean isSkiPassValid(User user) {
-    return user.getSkiPass().getRides() >= 1;
+    return user.isPassBought() && user.getSkiPass().getRides() >= 1;
   }
 }

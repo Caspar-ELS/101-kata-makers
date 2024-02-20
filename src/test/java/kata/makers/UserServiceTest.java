@@ -25,7 +25,7 @@ class UserServiceTest {
     User user = new User(TEST_USER_NAME_ONE);
 
     userService.buySkiPass(user);
-    Assertions.assertTrue(user.isValidPass());
+    Assertions.assertTrue(user.isPassBought());
   }
 
   @Test
@@ -61,6 +61,16 @@ class UserServiceTest {
     userService.scanSkiPass(user);
     userService.scanSkiPass(user);
     Assertions.assertEquals(0, user.getSkiPass().getRides());
+
+    Assertions.assertThrows(SkiPassInvalidException.class, () -> {
+      userService.scanSkiPass(user);
+    });
+
+  }
+
+  @Test
+  void userCannotScanPassWithoutBuying() {
+    User user = new User(TEST_USER_NAME_ONE);
 
     Assertions.assertThrows(SkiPassInvalidException.class, () -> {
       userService.scanSkiPass(user);

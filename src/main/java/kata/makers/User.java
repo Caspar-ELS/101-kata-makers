@@ -7,12 +7,12 @@ import lombok.Setter;
 @Setter
 public class User {
 
-  private boolean validPass;
+  private boolean passBought;
   private SkiPass skiPass;
   private String name;
 
   public User(String name) {
     this.name = name;
-    this.validPass = false;
+    this.passBought = false;
   }
 }
