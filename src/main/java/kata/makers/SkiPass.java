@@ -9,10 +9,10 @@ import lombok.Setter;
 public class SkiPass {
 
   private String id;
-  private boolean scanned;
+  private int rides;
 
   public SkiPass() {
     this.id = String.valueOf(UUID.randomUUID());
-    this.scanned = false;
+    this.rides = 5;
   }
 }

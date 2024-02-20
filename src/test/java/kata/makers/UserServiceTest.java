@@ -38,13 +38,15 @@ class UserServiceTest {
   }
 
   @Test
-  void userCanScanSkiPass() {
+  void userCanScanSkiPassAndRideOnce() {
     User user = new User(TEST_USER_NAME_ONE);
 
     userService.buySkiPass(user);
+    Assertions.assertEquals(5, user.getSkiPass().getRides());
+
     userService.scanSkiPass(user);
 
-    Assertions.assertTrue(user.getSkiPass().isScanned());
+    Assertions.assertEquals(4, user.getSkiPass().getRides());
   }
 
 }
