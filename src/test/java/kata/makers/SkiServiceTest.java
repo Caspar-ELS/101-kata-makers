@@ -8,12 +8,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
-class UserServiceTest {
+class SkiServiceTest {
 
   private static final String TEST_USER_NAME_ONE = "Erwin Smith";
   private static final String TEST_USER_NAME_TWO = "Levi Ackermann";
   @InjectMocks
-  private UserService userService;
+  private SkiService userService;
 
   @BeforeEach
   public void setUp() {

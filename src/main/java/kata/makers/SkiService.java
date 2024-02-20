@@ -4,7 +4,7 @@ import kata.makers.exception.SkiPassInvalidException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class SkiService {
 
   public void buySkiPass(User user) {
 
