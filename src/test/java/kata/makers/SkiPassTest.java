@@ -47,6 +47,24 @@ class SkiPassTest {
     assertFalse(lift.openGate(skiPass));
   }
 
-  // TODO: add edge cases (ski pass already exists error, ski pass not found error)
+  @Test
+  public void userCanOnlyUseSkiPassToRideTwoDifferentLiftsExactlyFiveTimes() {
+    SkiPassControl skiPassControl = new SkiPassControl();
+
+    Shop shop = new Shop(skiPassControl);
+    SkiPass skiPass = shop.getSkiPass();
+
+    Lift firstLift = new Lift(skiPassControl);
+    Lift secondLift = new Lift(skiPassControl);
+
+    assertTrue(firstLift.openGate(skiPass));
+    assertTrue(secondLift.openGate(skiPass));
+    assertTrue(firstLift.openGate(skiPass));
+    assertTrue(secondLift.openGate(skiPass));
+    assertTrue(firstLift.openGate(skiPass));
+    assertFalse(secondLift.openGate(skiPass));
+  }
+
+  // TODO: add edge cases (ski pass already exists error, ski pass not found error, ride two different lifts)
 
 }
