@@ -8,6 +8,7 @@ import lombok.Setter;
 public class User {
 
   private boolean validPass;
+  private SkiPass skiPass;
   private String name;
 
   public User(String name) {

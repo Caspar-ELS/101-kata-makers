@@ -9,5 +9,6 @@ public class UserService {
   public void buySkiPass(User user) {
 
     user.setValidPass(true);
+    user.setSkiPass(new SkiPass());
   }
 }
