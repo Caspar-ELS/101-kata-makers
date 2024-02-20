@@ -27,4 +27,19 @@ class SkiPassTest {
     assertEquals(true, lift.openGate(skiPass));
   }
 
+  @Test
+  public void userCanOnlyUseSkiPassToRideLiftFiveTimes() {
+    Shop shop = new Shop();
+    SkiPass skiPass = shop.getSkiPass();
+
+    Lift lift = new Lift();
+
+    assertEquals(true, lift.openGate(skiPass));
+    assertEquals(true, lift.openGate(skiPass));
+    assertEquals(true, lift.openGate(skiPass));
+    assertEquals(true, lift.openGate(skiPass));
+    assertEquals(true, lift.openGate(skiPass));
+    assertEquals(false, lift.openGate(skiPass));
+  }
+
 }
