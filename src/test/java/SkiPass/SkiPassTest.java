@@ -11,9 +11,9 @@ class SkiPassTest {
   @Test
   void testGetSkiPass() {
     SkiPass skiPass = new SkiPass();
-    String result = skiPass.getSkiPass();
+    String result = skiPass.getSkiPassNumber();
     assertNotNull(result);
-    assertEquals(result, "1234");
+    assertEquals("1234", result);
   }
 }
 
