@@ -11,4 +11,9 @@ public class UserService {
     user.setValidPass(true);
     user.setSkiPass(new SkiPass());
   }
+
+  public void scanSkiPass(User user) {
+
+    user.getSkiPass().setScanned(true);
+  }
 }

@@ -37,4 +37,14 @@ class UserServiceTest {
     Assertions.assertNotEquals(user.getSkiPass().getId(), userTwo.getSkiPass().getId());
   }
 
+  @Test
+  void userCanScanSkiPass() {
+    User user = new User(TEST_USER_NAME_ONE);
+
+    userService.buySkiPass(user);
+    userService.scanSkiPass(user);
+
+    Assertions.assertTrue(user.getSkiPass().isScanned());
+  }
+
 }
