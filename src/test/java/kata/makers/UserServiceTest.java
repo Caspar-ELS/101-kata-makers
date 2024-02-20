@@ -2,6 +2,7 @@ package kata.makers;
 
 import static org.mockito.MockitoAnnotations.openMocks;
 
+import kata.makers.exception.SkiPassInvalidException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,7 @@ class UserServiceTest {
     userService.scanSkiPass(user);
     Assertions.assertEquals(0, user.getSkiPass().getRides());
 
-    Assertions.assertThrows(Exception.class, () -> {
+    Assertions.assertThrows(SkiPassInvalidException.class, () -> {
       userService.scanSkiPass(user);
     });
 

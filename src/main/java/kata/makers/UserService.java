@@ -1,5 +1,6 @@
 package kata.makers;
 
+import kata.makers.exception.SkiPassInvalidException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,11 +12,11 @@ public class UserService {
     user.setSkiPass(new SkiPass());
   }
 
-  public void scanSkiPass(User user) throws Exception {
+  public void scanSkiPass(User user) throws SkiPassInvalidException {
     if (isSkiPassValid(user)) {
       user.getSkiPass().setRides(user.getSkiPass().getRides()-1);
     } else {
-      throw new Exception("Pass not valid anymore");
+      throw new SkiPassInvalidException("Pass not valid anymore");
     }
   }
 
