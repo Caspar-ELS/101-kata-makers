@@ -38,7 +38,7 @@ class UserServiceTest {
   }
 
   @Test
-  void userCanScanSkiPassAndRideOnce() {
+  void userCanScanSkiPassAndRideOnce() throws Exception {
     User user = new User(TEST_USER_NAME_ONE);
 
     userService.buySkiPass(user);
@@ -47,6 +47,24 @@ class UserServiceTest {
     userService.scanSkiPass(user);
 
     Assertions.assertEquals(4, user.getSkiPass().getRides());
+  }
+
+  @Test
+  void userCannotUseTheSamePassMoreThanFiveTimes() throws Exception {
+    User user = new User(TEST_USER_NAME_ONE);
+
+    userService.buySkiPass(user);
+    userService.scanSkiPass(user);
+    userService.scanSkiPass(user);
+    userService.scanSkiPass(user);
+    userService.scanSkiPass(user);
+    userService.scanSkiPass(user);
+    Assertions.assertEquals(0, user.getSkiPass().getRides());
+
+    Assertions.assertThrows(Exception.class, () -> {
+      userService.scanSkiPass(user);
+    });
+
   }
 
 }
