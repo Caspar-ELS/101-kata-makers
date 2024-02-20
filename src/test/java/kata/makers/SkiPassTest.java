@@ -2,9 +2,10 @@ package kata.makers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import kata.makers.model.SkiPass;
 import org.junit.jupiter.api.Test;
 
-class ShopTest {
+class SkiPassTest {
 
   @Test
   public void userCanGetAUniqueSkiPass() {
@@ -15,6 +16,15 @@ class ShopTest {
     assertEquals(2, shop.getSkiPass().getId());
     assertEquals(3, shop.getSkiPass().getId());
     assertEquals(4, shop.getSkiPass().getId());
+  }
+
+  @Test
+  public void userCanUseSkiPassToRideLift() {
+    Lift lift = new Lift();
+
+    SkiPass skiPass = new SkiPass(0);
+
+    assertEquals(true, lift.openGate(skiPass));
   }
 
 }

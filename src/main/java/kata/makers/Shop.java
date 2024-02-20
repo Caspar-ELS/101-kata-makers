@@ -1,5 +1,7 @@
 package kata.makers;
 
+import kata.makers.model.SkiPass;
+
 public class Shop {
 
   long nextId = 0;

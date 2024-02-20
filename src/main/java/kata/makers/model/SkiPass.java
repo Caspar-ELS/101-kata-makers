@@ -1,4 +1,4 @@
-package kata.makers;
+package kata.makers.model;
 
 import lombok.Getter;
 
