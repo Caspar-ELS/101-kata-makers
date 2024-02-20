@@ -4,13 +4,13 @@ import kata.makers.model.SkiPass;
 
 public class Shop {
 
-  long nextId = 0;
+  SkiPassControl skiPassControl;
+
+  public Shop(SkiPassControl skiPassControl) {
+    this.skiPassControl = skiPassControl;
+  }
 
   public SkiPass getSkiPass() {
-    SkiPass skiPass = new SkiPass(nextId);
-
-    nextId++;
-
-    return skiPass;
+    return skiPassControl.registerNewSkiPass();
   }
 }
