@@ -4,23 +4,31 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>com.elsevier.q2c</groupId>
+    <artifactId>shared-parent-external</artifactId>
+    <version>0.0.0</version>
+    <relativePath/>
+  </parent>
   <artifactId>kata-makers</artifactId>
-  <groupId>java-one-o-one</groupId>
   <version>0.0.0</version>
+
+  <name>kata</name>
 
   <dependencies>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.6.2</version>
-      <scope>test</scope>
+      <groupId>com.elsevier.q2c</groupId>
+      <artifactId>junit-starter-pom</artifactId>
+      <type>pom</type>
+      <version>0.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.elsevier.q2c</groupId>
+      <artifactId>aws-starter-pom</artifactId>
+      <type>pom</type>
+      <version>0.0.0</version>
     </dependency>
   </dependencies>
-
-  <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
 
   <build>
     <plugins>
