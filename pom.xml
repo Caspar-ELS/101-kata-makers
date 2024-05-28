@@ -8,6 +8,13 @@
   <groupId>java-one-o-one</groupId>
   <version>0.0.0</version>
 
+  <parent>
+  <groupId>com.elsevier.q2c</groupId>
+  <artifactId>shared-parent-external</artifactId>
+  <version>2024-01-11-2f38765</version>
+  <relativePath/>
+  </parent>
+
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -15,32 +22,21 @@
       <version>5.6.2</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+     </dependency>
+
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+    </dependency>
   </dependencies>
-
-  <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>build-info</id>
-            <goals>
-              <goal>build-info</goal>
-            </goals>
-          </execution>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>
