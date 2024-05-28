@@ -1,0 +1,9 @@
+- filter for remaining fields
+- filtering by enum values instead of strings (title etc)
+- when filtering by title, return everything that includes the search word (Crime, Crime 2, Crime 3)
+
+- create user
+- user can add/remove from watchlist
+- user can rate shows
+
+- list all shows sorting by sth
