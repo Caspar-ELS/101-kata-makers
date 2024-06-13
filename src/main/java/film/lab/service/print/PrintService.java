@@ -35,22 +35,18 @@ public class PrintService {
   }
 
   private void updateTotalFrom(Quality quality) {
-    if (quality.equals(Quality.HIGH)) {
-      total += 4.0;
-    } else if (quality.equals(Quality.MEDIUM)) {
-      total += 3.0;
-    } else if (quality.equals(Quality.LOW)) {
-      total += 2.0;
+    switch (quality) {
+      case HIGH -> total += 4.0;
+      case MEDIUM -> total += 3.0;
+      case LOW -> total += 2.0;
     }
   }
 
   private void updateTotalFrom(Size size) {
-    if (size.equals(Size.SMALL)) {
-      total += 2.0;
-    } else if (size.equals(Size.MEDIUM)) {
-      total += 3.0;
-    } else if (size.equals(Size.LARGE)) {
-      total += 4.0;
+    switch (size) {
+      case SMALL -> total += 2.0;
+      case MEDIUM -> total += 3.0;
+      case LARGE -> total += 4.0;
     }
   }
 

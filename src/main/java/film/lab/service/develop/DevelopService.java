@@ -46,7 +46,8 @@ public class DevelopService {
   private void updateTotalFrom(Type type) {
     if (type.equals(Type.BLACK_AND_WHITE)) {
       total += 2.5;
-    } else if (type.equals(Type.COLOUR)) {
+    }
+    if (type.equals(Type.COLOUR)) {
       total += 3.5;
     }
   }
@@ -54,7 +55,8 @@ public class DevelopService {
   private void updateTotalFrom(Format format) {
     if (format.equals(Format.STANDARD_35MM)) {
       total += 5.0;
-    } else if (format.equals(Format.MEDIUM_120)) {
+    }
+    if (format.equals(Format.MEDIUM_120)) {
       total += 6.0;
     }
   }
