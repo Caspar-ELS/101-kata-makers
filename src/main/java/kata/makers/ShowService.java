@@ -1,6 +1,6 @@
 package kata.makers;
 
-import java.util.List;
+import java.util.Map;
 import kata.makers.exception.RequiredFieldsEmptyException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,7 +9,7 @@ public class ShowService {
   @Autowired
   private ShowsDatabase showsDatabase;
 
-  public List<Show> listAll() {
+  public Map<String, Show> listAll() {
     return showsDatabase.listAll();
   }
 
@@ -17,7 +17,7 @@ public class ShowService {
     showsDatabase.add(show);
   }
 
-  public void filterBy(String condition, String value) {
+  public void filterBy(Field condition, String value) {
     showsDatabase.filterBy(condition, value);
   }
 

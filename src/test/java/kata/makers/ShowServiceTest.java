@@ -45,14 +45,14 @@ class ShowServiceTest {
 
   @Test
   void userCanFilterByYear() {
-    showService.filterBy("yearReleased", "2024");
-    verify(showsDatabase, times(1)).filterBy("yearReleased","2024");
+    showService.filterBy(Field.YEAR_RELEASED, "2024");
+    verify(showsDatabase, times(1)).filterBy(Field.YEAR_RELEASED,"2024");
   }
 
   @Test
   void userCanFilterByTitle() {
-    showService.filterBy("title", "2024");
-    verify(showsDatabase, times(1)).filterBy("title","2024");
+    showService.filterBy(Field.TITLE, "2024");
+    verify(showsDatabase, times(1)).filterBy(Field.TITLE,"2024");
   }
 
 }
