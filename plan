@@ -1,4 +1,4 @@
-- filter for remaining fields
+
 - when filtering by title, return everything that includes the search word (Crime, Crime 2, Crime 3)
 
 - create user

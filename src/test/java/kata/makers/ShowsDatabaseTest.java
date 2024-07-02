@@ -51,7 +51,8 @@ class ShowsDatabaseTest {
   }
 
   @Test
-  void willReturnListOfShowsFromGivenYear() throws RequiredFieldsEmptyException {
+  void willReturnListOfShowsFromGivenYear()
+      throws RequiredFieldsEmptyException {
     Show showOne = buildTestShow();
     showsDatabase.add(showOne);
     Show showTwo = buildTestShowTwo();
@@ -61,7 +62,8 @@ class ShowsDatabaseTest {
   }
 
   @Test
-  void willReturnEmptyListIfNoShowsFromGivenYear() throws RequiredFieldsEmptyException {
+  void willReturnEmptyListIfNoShowsFromGivenYear()
+      throws RequiredFieldsEmptyException {
     Show showOne = buildTestShow();
     showsDatabase.add(showOne);
     Show showTwo = buildTestShowTwo();
@@ -71,7 +73,8 @@ class ShowsDatabaseTest {
   }
 
   @Test
-  void willReturnListOfShowsWithGivenTitle() throws RequiredFieldsEmptyException {
+  void willReturnListOfShowsWithGivenTitle()
+      throws RequiredFieldsEmptyException {
     Show showOne = buildTestShow();
     showsDatabase.add(showOne);
     Show showTwo = buildTestShowTwo();
@@ -81,13 +84,36 @@ class ShowsDatabaseTest {
   }
 
   @Test
-  void willReturnEmptyListIfNoShowsWithGivenTitle() throws RequiredFieldsEmptyException {
+  void willReturnEmptyListIfNoShowsWithGivenTitle()
+      throws RequiredFieldsEmptyException {
     Show showOne = buildTestShow();
     showsDatabase.add(showOne);
     Show showTwo = buildTestShowTwo();
     showsDatabase.add(showTwo);
 
     Assertions.assertEquals(List.of(), showsDatabase.filterBy(Field.TITLE,"Crime 3"));
+  }
+
+  @Test
+  void willReturnListOfShowsWithGivenStreamingPlatform()
+      throws RequiredFieldsEmptyException {
+    Show showOne = buildTestShow();
+    showsDatabase.add(showOne);
+    Show showTwo = buildTestShowTwo();
+    showsDatabase.add(showTwo);
+
+    Assertions.assertEquals(List.of(showOne), showsDatabase.filterBy(Field.STREAMING_PLATFORM, "Netflix"));
+  }
+
+  @Test
+  void willReturnEmptyListIfNoShowsWithGivenStreamingPlatform()
+      throws RequiredFieldsEmptyException {
+    Show showOne = buildTestShow();
+    showsDatabase.add(showOne);
+    Show showTwo = buildTestShowTwo();
+    showsDatabase.add(showTwo);
+
+    Assertions.assertEquals(List.of(), showsDatabase.filterBy(Field.STREAMING_PLATFORM,"Amazon Prime"));
   }
 
   @Test
@@ -114,6 +140,7 @@ class ShowsDatabaseTest {
     return Show.builder()
         .title("Crime")
         .yearReleased("2018")
+        .streamingPlatform("Netflix")
         .build();
   }
 

@@ -33,9 +33,17 @@ public class ShowsDatabase {
 
   public List<Show> filterBy(Field condition, String value) {
     if (condition.equals(Field.TITLE)) {
-      return shows.values().stream().filter(show -> show.getTitle().equals(value)).toList();
+      return shows.values().stream().filter(show -> show.getTitle() != null && show.getTitle().equals(value)).toList();
     } else if (condition.equals(Field.YEAR_RELEASED)) {
-      return shows.values().stream().filter(show -> show.getYearReleased().equals(value)).toList();
+      return shows.values().stream().filter(show -> show.getYearReleased() != null && show.getYearReleased().equals(value)).toList();
+    } else if (condition.equals(Field.DIRECTOR)) {
+      return shows.values().stream().filter(show -> show.getDirector() != null && show.getDirector().equals(value)).toList();
+    } else if (condition.equals(Field.GENRE)) {
+      return shows.values().stream().filter(show -> show.getGenre() != null && show.getGenre().equals(value)).toList();
+    } else if (condition.equals(Field.LANGUAGE)) {
+      return shows.values().stream().filter(show -> show.getLanguage() != null && show.getLanguage().equals(value)).toList();
+    } else if (condition.equals(Field.STREAMING_PLATFORM)) {
+      return shows.values().stream().filter(show -> show.getStreamingPlatform() != null && show.getStreamingPlatform().equals(value)).toList();
     }
 
     return List.of();
