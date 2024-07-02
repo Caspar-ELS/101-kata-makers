@@ -35,7 +35,7 @@ class ShowsDatabaseTest {
   void willReturnListOfAddedShows() throws RequiredFieldsEmptyException {
     Show newShow = buildTestShow();
     showsDatabase.add(newShow);
-    Assertions.assertEquals(Map.of("crime_2018", newShow), showsDatabase.listAll());
+    Assertions.assertEquals(Map.of("crime_2018_1", newShow), showsDatabase.listAll());
   }
 
   @Test
@@ -88,6 +88,26 @@ class ShowsDatabaseTest {
     showsDatabase.add(showTwo);
 
     Assertions.assertEquals(List.of(), showsDatabase.filterBy(Field.TITLE,"Crime 3"));
+  }
+
+  @Test
+  void willConstructKeyForTheShow() throws RequiredFieldsEmptyException {
+    Show newShow = buildTestShow();
+    showsDatabase.add(newShow);
+    Assertions.assertEquals("crime_2018_1", showsDatabase.getShows().keySet().stream().findFirst().get());
+  }
+
+  @Test
+  void willConstructKeyForTheShowIfKeyAlreadyPresent() throws RequiredFieldsEmptyException {
+    Show newShow = buildTestShow();
+    showsDatabase.add(newShow);
+    Show newShowTwo = buildTestShow();
+    showsDatabase.add(newShowTwo);
+    Show newShowThree = buildTestShow();
+    showsDatabase.add(newShowThree);
+    Assertions.assertEquals(newShow, showsDatabase.getShows().get("crime_2018_1"));
+    Assertions.assertEquals(newShowTwo, showsDatabase.getShows().get("crime_2018_2"));
+    Assertions.assertEquals(newShowThree, showsDatabase.getShows().get("crime_2018_3"));
   }
 
   private static Show buildTestShow() {

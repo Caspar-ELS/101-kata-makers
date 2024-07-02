@@ -16,11 +16,11 @@ public class ShowsDatabase {
   public void add(Show show) throws RequiredFieldsEmptyException {
 
     try {
-      if (!show.getTitle().isBlank() && !show.getYearReleased().isBlank()) {
+      if (!show.getTitle().isBlank() && !show.getYearReleased().isBlank() && !show.getYearReleased().isBlank()) {
         shows.put(getKey(show), show);
         log.info("Added to the database.");
       } else {
-        log.info("The title and the year of release are required.");
+        log.info("The title, year of release and director name are required fields.");
       }
     } catch (NullPointerException nullPointerException) {
       throw new RequiredFieldsEmptyException("The title and the year of release are required.");
@@ -42,6 +42,22 @@ public class ShowsDatabase {
   }
 
   private String getKey(Show show) {
-    return show.getTitle().toLowerCase() + "_" + show.getYearReleased();
+    String[] splitTitle = show.getTitle().toLowerCase().split(" ");
+    String titleAndYear = String.join("_", splitTitle) + "_" + show.getYearReleased();
+    String finalKey = titleAndYear + "_1";
+    List<String> matchingKeys = shows.keySet().stream().filter(key -> key.contains(titleAndYear)).toList();
+    if (!matchingKeys.isEmpty()) {
+      finalKey = updateKeyWithNumber(matchingKeys);
+    }
+    return finalKey;
+  }
+
+  private static String updateKeyWithNumber(List<String> matchingKeys) {
+    String finalKey;
+    String[] splitKey = matchingKeys.get(0).split("_");
+    splitKey[splitKey.length-1] = String.valueOf(
+        Integer.parseInt(splitKey[splitKey.length-1]) + 1);
+    finalKey = String.join("_", splitKey);
+    return finalKey;
   }
 }
