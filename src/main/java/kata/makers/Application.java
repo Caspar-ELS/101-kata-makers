@@ -60,7 +60,7 @@ public class Application {
 
   private static void createFlightReservation() {
     try {
-      bookingService.createFlightReservation();
+      bookingService.createFlightReservationAndTransferMoney();
     } catch (CreateFlightReservationException createFlightReservationException) {
       log.error("Error when making flight reservation: {}",
           createFlightReservationException.getMessage());
