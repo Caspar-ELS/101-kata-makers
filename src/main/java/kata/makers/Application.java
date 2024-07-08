@@ -13,9 +13,10 @@ public class Application {
 
   private static final Logger log = LoggerFactory.getLogger(Application.class);
 
+  static FlightService flightService = new FlightService(new HashMap<>());
+  static BookingService bookingService = new BookingService(flightService);
+
   public static void main(String[] args) {
-    FlightService flightService = new FlightService(new HashMap<>());
-    BookingService bookingService = new BookingService(flightService);
 
     Scanner scanner = new Scanner(System.in);
     while (true) {
@@ -29,20 +30,11 @@ public class Application {
       String input = scanner.nextLine();
 
       if ("1".equals(input)) {
-        flightService.listAll();
+        listAllFlights();
       } else if ("2".equals(input)) {
-        try {
-          flightService.create();
-        } catch (CreateFlightException createFlightException) {
-          log.error("Error when creating a flight: {}", createFlightException.getMessage());
-        }
+        createFlight();
       } else if ("3".equals(input)) {
-        try {
-          bookingService.createFlightReservation();
-        } catch (CreateFlightReservationException createFlightReservationException) {
-          log.error("Error when making flight reservation: {}",
-              createFlightReservationException.getMessage());
-        }
+        createFlightReservation();
       } else if ("q".equals(input)) {
         log.info("Exiting...");
         break;
@@ -52,5 +44,26 @@ public class Application {
     }
 
     scanner.close();
+  }
+
+  private static void listAllFlights() {
+    flightService.listAll();
+  }
+
+  private static void createFlight() {
+    try {
+      flightService.create();
+    } catch (CreateFlightException createFlightException) {
+      log.error("Error when creating a flight: {}", createFlightException.getMessage());
+    }
+  }
+
+  private static void createFlightReservation() {
+    try {
+      bookingService.createFlightReservation();
+    } catch (CreateFlightReservationException createFlightReservationException) {
+      log.error("Error when making flight reservation: {}",
+          createFlightReservationException.getMessage());
+    }
   }
 }
