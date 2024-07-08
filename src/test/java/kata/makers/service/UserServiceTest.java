@@ -2,6 +2,7 @@ package kata.makers.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import kata.makers.enums.Role;
 import kata.makers.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ public class UserServiceTest {
 
     User newlyCreatedUser = userService.createCustomer(customerName, initialBalance);
 
+    assertEquals(Role.CUSTOMER, newlyCreatedUser.getRole());
     assertEquals(customerName, newlyCreatedUser.getName());
     assertEquals(initialBalance, newlyCreatedUser.getBalance());
   }
