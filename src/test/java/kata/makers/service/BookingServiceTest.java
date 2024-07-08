@@ -29,7 +29,7 @@ class BookingServiceTest {
       when(flightService.getFlightByNumber(any())).thenReturn(Optional.ofNullable(flight));
 
       BookingService bookingService = new BookingService(flightService);
-      bookingService.createFlightReservation();
+      bookingService.createFlightReservationAndTransferMoney();
       verify(flightService, times(1)).getFlightByNumber(any());
 
   }
@@ -46,7 +46,7 @@ class BookingServiceTest {
 
     BookingService bookingService = new BookingService(flightService);
     assertThrows(CreateFlightReservationException.class,
-        () -> bookingService.createFlightReservation());
+        () -> bookingService.createFlightReservationAndTransferMoney());
 
   }
 

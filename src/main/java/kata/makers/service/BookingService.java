@@ -24,19 +24,28 @@ public class BookingService {
     this.financialService = new FinancialService();
   }
 
-  public void createFlightReservation() throws CreateFlightReservationException {
+  public void createFlightReservationAndTransferMoney() throws CreateFlightReservationException {
 
     Scanner scanner = new Scanner(System.in);
     log.info("Please input flight number");
     String flightNumber = scanner.nextLine();
 
+    Flight flight = getFlightByFlightNumber(flightNumber);
+
+    log.info("Successfully book flight - {}", flightNumber);
+    transferMoney(user, merchant, flight.getPrice());
+  }
+
+  private Flight getFlightByFlightNumber(String flightNumber) throws CreateFlightReservationException {
     Optional<Flight> flightOptional = flightService.getFlightByNumber(flightNumber);
     if (flightOptional.isEmpty()) {
       throw new CreateFlightReservationException("Cannot find flight" + flightNumber);
     }
 
-    log.info("Successfully book flight - {}", flightNumber);
-    Flight flight = flightOptional.get();
-    financialService.transferMoney(user, merchant, flight.getPrice());
+    return flightOptional.get();
+  }
+
+  private void transferMoney(User transferFrom, User transferTo, Double amount) {
+    financialService.transferMoney(transferFrom, transferTo, amount);
   }
 }
