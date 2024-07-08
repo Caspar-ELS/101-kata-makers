@@ -1,5 +1,6 @@
 package kata.makers.service;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -46,6 +47,8 @@ class FlightServiceTest {
     String to = "to";
     double price = 10.5;
 
+    Flight flightExpected = new Flight(from, to, price);
+
     String flightNumberInput = flightNumber + "\n" + from + "\n" + to + "\n" + price;
     InputStream in = new ByteArrayInputStream(flightNumberInput.getBytes());
     System.setIn(in);
@@ -53,11 +56,9 @@ class FlightServiceTest {
     FlightService flightService = new FlightService(flightInformation);
     flightService.create();
 
-    Flight expectedFlight = flightInformation.get(flightNumber);
+    Flight flightCreated = flightInformation.get(flightNumber);
 
-    assertEquals(from, expectedFlight.getFrom());
-    assertEquals(to, expectedFlight.getDestination());
-    assertEquals(price, expectedFlight.getPrice());
+    assertThat(flightExpected).usingRecursiveComparison().isEqualTo(flightCreated);
   }
 
   @Test
