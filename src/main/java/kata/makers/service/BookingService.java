@@ -24,7 +24,7 @@ public class BookingService {
     this.financialService = new FinancialService();
   }
 
-  public void createFlightReservationAndTransferMoney() throws CreateFlightReservationException {
+  public void createFlightReservationAndTransferMoney(User customer) throws CreateFlightReservationException {
 
     Scanner scanner = new Scanner(System.in);
     log.info("Please input flight number");
@@ -33,7 +33,7 @@ public class BookingService {
     Flight flight = getFlightByFlightNumber(flightNumber);
 
     log.info("Successfully book flight - {}", flightNumber);
-    transferMoney(user, merchant, flight.getPrice());
+    transferMoney(customer, merchant, flight.getPrice());
   }
 
   private Flight getFlightByFlightNumber(String flightNumber) throws CreateFlightReservationException {
