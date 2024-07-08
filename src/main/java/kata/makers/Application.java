@@ -47,7 +47,7 @@ public class Application {
         log.info("Exiting...");
         break;
       } else {
-        log.error("Invalid input. Please enter 1, 2, or q.");
+        log.error("Invalid input. Please enter 1, 2, 3 or q.");
       }
     }
 
