@@ -1,5 +1,6 @@
 package film.lab.service.print;
 
+import film.lab.exception.InvalidOrderNumberException;
 import film.lab.model.Order;
 import film.lab.model.Prints;
 import film.lab.model.Quality;
@@ -18,9 +19,13 @@ public class PrintService {
     this.developService = developService;
   }
 
-  public double print(Order order) {
+  public double print(Order order) throws InvalidOrderNumberException {
     if (isFromPreviousOrder(order.getPrints())) {
       calculateCost(order.getPrints());
+    } else if (isNewOrder(order)) {
+      calculateCost(order.getPrints());
+    } else {
+      throw new InvalidOrderNumberException("Order number must be within past year");
     }
     return total;
   }
@@ -53,6 +58,10 @@ public class PrintService {
   private boolean isFromPreviousOrder(Prints prints) {
     return developService.getCompletedOrders().contains(prints.getDevelopOrderNumber())
         && isWithinPastYear(prints.getDevelopOrderNumber());
+  }
+
+  private static boolean isNewOrder(Order order) {
+    return order.getPrints().getDevelopOrderNumber() == null;
   }
 
   private boolean isWithinPastYear(String developOrderNumber) {

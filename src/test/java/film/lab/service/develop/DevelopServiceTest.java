@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
+import film.lab.exception.InvalidOrderNumberException;
 import film.lab.model.CustomerDetails;
 import film.lab.model.Film;
 import film.lab.model.Format;
@@ -35,7 +36,8 @@ class DevelopServiceTest {
   }
 
   @Test
-  void willCalculateCostOfDevelopingRollOf35mmBlackAndWhiteFilm() {
+  void willCalculateCostOfDevelopingRollOf35mmBlackAndWhiteFilm()
+      throws InvalidOrderNumberException {
     Film film = new Film();
     film.setFormat(Format.STANDARD_35MM);
     film.setType(Type.BLACK_AND_WHITE);
@@ -51,7 +53,7 @@ class DevelopServiceTest {
   }
 
   @Test
-  void willCalculateCostOfDevelopingRollOf120ColourFilm() {
+  void willCalculateCostOfDevelopingRollOf120ColourFilm() throws InvalidOrderNumberException {
     Film film = new Film();
     film.setFormat(Format.MEDIUM_120);
     film.setType(Type.COLOUR);
@@ -66,7 +68,7 @@ class DevelopServiceTest {
   }
 
   @Test
-  void willAddDevelopedFilmToCompletedOrders() {
+  void willAddDevelopedFilmToCompletedOrders() throws InvalidOrderNumberException {
     Film film = new Film();
     film.setFormat(Format.MEDIUM_120);
     film.setType(Type.COLOUR);
@@ -82,7 +84,7 @@ class DevelopServiceTest {
   }
 
   @Test
-  void willCallPrintServiceIfPrintsPresentOnTheOrder() {
+  void willCallPrintServiceIfPrintsPresentOnTheOrder() throws InvalidOrderNumberException {
     Film film = new Film();
     film.setFormat(Format.MEDIUM_120);
     film.setType(Type.COLOUR);

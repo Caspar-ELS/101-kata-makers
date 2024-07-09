@@ -1,9 +1,11 @@
 package film.lab.service.print;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
+import film.lab.exception.InvalidOrderNumberException;
 import film.lab.model.Order;
 import film.lab.model.Prints;
 import film.lab.model.Quality;
@@ -29,7 +31,8 @@ class PrintServiceTest {
   }
 
   @Test
-  void willCalculateCostForPrintsFromPreviousOrderWithinPastYear() {
+  void willCalculateCostForPrintsFromPreviousOrderWithinPastYear()
+      throws InvalidOrderNumberException {
     Prints prints = new Prints();
     prints.setSize(Size.MEDIUM);
     prints.setQuality(Quality.HIGH);
@@ -43,5 +46,33 @@ class PrintServiceTest {
     printService.print(order);
 
     assertEquals(7.0, printService.getTotal());
+  }
+
+  @Test
+  void willCalculateCostForPrintFromNewOrder() throws InvalidOrderNumberException {
+    Prints prints = new Prints();
+    prints.setSize(Size.MEDIUM);
+    prints.setQuality(Quality.HIGH);
+
+    Order order = new Order();
+    order.setPrints(prints);
+
+    printService.print(order);
+
+    assertEquals(7.0, printService.getTotal());
+  }
+
+  @Test
+  void willThrowExceptionIfOrderNumberProvidedDoesNotMeetCriteria() {
+    Prints prints = new Prints();
+    prints.setSize(Size.MEDIUM);
+    prints.setQuality(Quality.HIGH);
+    prints.setDevelopOrderNumber("DOE_2000-06-03");
+
+    Order order = new Order();
+    order.setPrints(prints);
+
+    assertThrows(InvalidOrderNumberException.class, () -> printService.print(order));
+
   }
 }

@@ -2,7 +2,5 @@ As a film lab technician I want to be able to offer film developing services to 
 
 As a photographer I want to be able to buy prints from a previous develop order
 
-TODO:
-
 As a film lab technician I want to be able to offer print services to customers
 

@@ -1,5 +1,6 @@
 package film.lab.service.develop;
 
+import film.lab.exception.InvalidOrderNumberException;
 import film.lab.model.CustomerDetails;
 import film.lab.model.Film;
 import film.lab.model.Format;
@@ -20,7 +21,7 @@ public class DevelopService {
     this.printService = printService;
   }
 
-  public void develop(Order order) {
+  public void develop(Order order) throws InvalidOrderNumberException {
     calculateCost(order.getFilm());
 
     if (order.getPrints() != null) {
