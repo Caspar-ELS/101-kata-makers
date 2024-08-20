@@ -5,8 +5,11 @@ This is a simple service status checker that shows the service instance is up or
 ## Requirements:
 
 - [x] Show all BOM running microservices in DEV
-- [ ] Show all microservices, categorized by components (billing, order_management, fulfillment,
+- [x] Show all microservices, categorized by components (billing, order_management, fulfillment,
   revenue_recognition, core_bom, test_utilities)
+- [ ] Show which component need to start for corresponding regression test cases, eg: we want to run Invoices regression test, `billing` component needs to start before running the test (you can assume `core_bom` is always on)
+- [ ] ***Optional goal***: if the all the microservices in that component already started, then we don't have to ask the user to start that component
+    - Example: We want to run GeneralLedgerRevenueRecognitionV3, require starting both `order_management` and `revenue_recognition` components, while orrx, orcx and oisu
 
 ## Example
 
@@ -20,6 +23,15 @@ order_management
 Name: orrx, State: not running
 Name: orcx, State: running
 .....
+
+To run regression test you have to start component:
+Orders: order_management
+Invoices: billing
+CreditNotes: billing
+TransactionStatuses: billing
+AccountsReceivablesRevenueRecognition: order_management, fulfillment, test_utilities
+GeneralLedgerRevenueRecognitionV3: order_management, revenue_recognition
+
 ```
 
 ## Useful information
