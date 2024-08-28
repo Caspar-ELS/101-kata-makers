@@ -28,14 +28,15 @@ public class Ec2Service {
   private final TagService tagService = new TagService();
   private final FilterService filterService = new FilterService();
 
-  private static final HashMap<String, List<ServiceStatus>> COMPONENT_SERVICES_STATUS_MAP = new HashMap<>(Map.of(
-      BILLING, Collections.emptyList(),
-      ORDER_MANAGEMENT, Collections.emptyList(),
-      FULFILLMENT, Collections.emptyList(),
-      REVENUE_RECOGNITION, Collections.emptyList(),
-      CORE_BOM, Collections.emptyList(),
-      TEST_UTILITIES, Collections.emptyList()
-  ));
+  private static final HashMap<String, List<ServiceStatus>> COMPONENT_SERVICES_STATUS_MAP = new HashMap<>(
+      Map.of(
+          BILLING, Collections.emptyList(),
+          ORDER_MANAGEMENT, Collections.emptyList(),
+          FULFILLMENT, Collections.emptyList(),
+          REVENUE_RECOGNITION, Collections.emptyList(),
+          CORE_BOM, Collections.emptyList(),
+          TEST_UTILITIES, Collections.emptyList()
+      ));
 
 
   public void listRunningInstance() {
@@ -60,7 +61,7 @@ public class Ec2Service {
           Optional<ServiceStatus> optionalServiceStatus = servicesInComponent.stream()
               .filter(service -> serviceShortName.equals(service.getName())).findFirst();
 
-          if(optionalServiceStatus.isPresent()){
+          if (optionalServiceStatus.isPresent()) {
             updateServiceStatus(servicesInComponent, optionalServiceStatus);
 
             COMPONENT_SERVICES_STATUS_MAP.put(component, servicesInComponent);
@@ -70,12 +71,16 @@ public class Ec2Service {
     }
 
     System.out.println("To run regression test you have to start component:");
-    System.out.println(String.format("Orders: %s", printComponentFor(List.of(ORDER_MANAGEMENT, BILLING))));
+    System.out.println(
+        String.format("Orders: %s", printComponentFor(List.of(ORDER_MANAGEMENT, BILLING))));
     System.out.println(String.format("Invoices: %s", printComponentFor(List.of(BILLING))));
     System.out.println(String.format("CreditNotes: %s", printComponentFor(List.of(BILLING))));
-    System.out.println(String.format("TransactionStatuses: %s", printComponentFor(List.of(BILLING))));
-    System.out.println(String.format("AccountsReceivablesRevenueRecognition: %s", printComponentFor(List.of(ORDER_MANAGEMENT, BILLING, REVENUE_RECOGNITION, TEST_UTILITIES, FULFILLMENT))));
-    System.out.println(String.format("GeneralLedgerRevenueRecognitionV3: %s", printComponentFor(List.of(ORDER_MANAGEMENT, REVENUE_RECOGNITION, FULFILLMENT))));
+    System.out.println(
+        String.format("TransactionStatuses: %s", printComponentFor(List.of(BILLING))));
+    System.out.println(String.format("AccountsReceivablesRevenueRecognition: %s", printComponentFor(
+        List.of(ORDER_MANAGEMENT, BILLING, REVENUE_RECOGNITION, TEST_UTILITIES, FULFILLMENT))));
+    System.out.println(String.format("GeneralLedgerRevenueRecognitionV3: %s",
+        printComponentFor(List.of(ORDER_MANAGEMENT, REVENUE_RECOGNITION, FULFILLMENT))));
 
   }
 
@@ -100,17 +105,22 @@ public class Ec2Service {
     return tagMap.get("Environment");
   }
 
-  private List<ServiceStatus> initialServicesStatus(List<String> serviceNames){
+  private List<ServiceStatus> initialServicesStatus(List<String> serviceNames) {
     return serviceNames.stream().map(serviceName -> new ServiceStatus(serviceName, false)).toList();
   }
 
-  private void initialiseServiceRunningMap(){
+  private void initialiseServiceRunningMap() {
     COMPONENT_SERVICES_STATUS_MAP.put(BILLING, initialServicesStatus(BOM_COMPONENTS.get(BILLING)));
-    COMPONENT_SERVICES_STATUS_MAP.put(ORDER_MANAGEMENT, initialServicesStatus(BOM_COMPONENTS.get(ORDER_MANAGEMENT)));
-    COMPONENT_SERVICES_STATUS_MAP.put(FULFILLMENT, initialServicesStatus(BOM_COMPONENTS.get(FULFILLMENT)));
-    COMPONENT_SERVICES_STATUS_MAP.put(REVENUE_RECOGNITION, initialServicesStatus(BOM_COMPONENTS.get(REVENUE_RECOGNITION)));
-    COMPONENT_SERVICES_STATUS_MAP.put(CORE_BOM, initialServicesStatus(BOM_COMPONENTS.get(CORE_BOM)));
-    COMPONENT_SERVICES_STATUS_MAP.put(TEST_UTILITIES, initialServicesStatus(BOM_COMPONENTS.get(TEST_UTILITIES)));
+    COMPONENT_SERVICES_STATUS_MAP.put(ORDER_MANAGEMENT,
+        initialServicesStatus(BOM_COMPONENTS.get(ORDER_MANAGEMENT)));
+    COMPONENT_SERVICES_STATUS_MAP.put(FULFILLMENT,
+        initialServicesStatus(BOM_COMPONENTS.get(FULFILLMENT)));
+    COMPONENT_SERVICES_STATUS_MAP.put(REVENUE_RECOGNITION,
+        initialServicesStatus(BOM_COMPONENTS.get(REVENUE_RECOGNITION)));
+    COMPONENT_SERVICES_STATUS_MAP.put(CORE_BOM,
+        initialServicesStatus(BOM_COMPONENTS.get(CORE_BOM)));
+    COMPONENT_SERVICES_STATUS_MAP.put(TEST_UTILITIES,
+        initialServicesStatus(BOM_COMPONENTS.get(TEST_UTILITIES)));
   }
 
   private List<String> printComponentFor(List<String> components) {
@@ -118,7 +128,8 @@ public class Ec2Service {
         COMPONENT_SERVICES_STATUS_MAP)).toList();
   }
 
-  private void updateServiceStatus(List<ServiceStatus> servicesInComponent, Optional<ServiceStatus> optionalServiceStatusToBeUpdated){
+  private void updateServiceStatus(List<ServiceStatus> servicesInComponent,
+      Optional<ServiceStatus> optionalServiceStatusToBeUpdated) {
     ServiceStatus serviceStatus = optionalServiceStatusToBeUpdated.get();
     serviceStatus.setRunning(true);
     servicesInComponent.set(servicesInComponent.indexOf(serviceStatus), serviceStatus);
