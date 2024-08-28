@@ -72,15 +72,25 @@ public class Ec2Service {
 
     System.out.println("To run regression test you have to start component:");
     System.out.println(
-        String.format("Orders: %s", printComponentFor(List.of(ORDER_MANAGEMENT, BILLING))));
-    System.out.println(String.format("Invoices: %s", printComponentFor(List.of(BILLING))));
-    System.out.println(String.format("CreditNotes: %s", printComponentFor(List.of(BILLING))));
+        String.format("Orders: %s",
+            filterService.getComponentWithNonRunningServices(COMPONENT_SERVICES_STATUS_MAP,
+                List.of(ORDER_MANAGEMENT, BILLING))));
+    System.out.println(String.format("Invoices: %s",
+        filterService.getComponentWithNonRunningServices(COMPONENT_SERVICES_STATUS_MAP,
+            List.of(BILLING))));
+    System.out.println(String.format("CreditNotes: %s",
+        filterService.getComponentWithNonRunningServices(COMPONENT_SERVICES_STATUS_MAP,
+            List.of(BILLING))));
     System.out.println(
-        String.format("TransactionStatuses: %s", printComponentFor(List.of(BILLING))));
-    System.out.println(String.format("AccountsReceivablesRevenueRecognition: %s", printComponentFor(
-        List.of(ORDER_MANAGEMENT, BILLING, REVENUE_RECOGNITION, TEST_UTILITIES, FULFILLMENT))));
+        String.format("TransactionStatuses: %s",
+            filterService.getComponentWithNonRunningServices(COMPONENT_SERVICES_STATUS_MAP,
+                List.of(BILLING))));
+    System.out.println(String.format("AccountsReceivablesRevenueRecognition: %s",
+        filterService.getComponentWithNonRunningServices(
+            COMPONENT_SERVICES_STATUS_MAP,
+            List.of(ORDER_MANAGEMENT, BILLING, REVENUE_RECOGNITION, TEST_UTILITIES, FULFILLMENT))));
     System.out.println(String.format("GeneralLedgerRevenueRecognitionV3: %s",
-        printComponentFor(List.of(ORDER_MANAGEMENT, REVENUE_RECOGNITION, FULFILLMENT))));
+        filterService.getComponentWithNonRunningServices(COMPONENT_SERVICES_STATUS_MAP, List.of(ORDER_MANAGEMENT, REVENUE_RECOGNITION, FULFILLMENT))));
 
   }
 
@@ -123,10 +133,10 @@ public class Ec2Service {
         initialServicesStatus(BOM_COMPONENTS.get(TEST_UTILITIES)));
   }
 
-  private List<String> printComponentFor(List<String> components) {
-    return components.stream().filter(component -> !filterService.isAllServicesRunningIn(component,
-        COMPONENT_SERVICES_STATUS_MAP)).toList();
-  }
+//  private List<String> getComponentWithNonRunningServices(List<String> components) {
+//    return components.stream().filter(component -> !filterService.isAllServicesRunningIn(component,
+//        COMPONENT_SERVICES_STATUS_MAP)).toList();
+//  }
 
   private void updateServiceStatus(List<ServiceStatus> servicesInComponent,
       Optional<ServiceStatus> optionalServiceStatusToBeUpdated) {

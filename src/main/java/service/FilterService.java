@@ -33,4 +33,10 @@ public class FilterService {
     return serviceRunningMap.get(component).stream().allMatch(ServiceStatus::isRunning);
   }
 
+  public List<String> getComponentWithNonRunningServices(
+      Map<String, List<ServiceStatus>> componentServicesStatusMap, List<String> components) {
+    return components.stream().filter(component -> !isAllServicesRunningIn(component,
+        componentServicesStatusMap)).toList();
+  }
+
 }
