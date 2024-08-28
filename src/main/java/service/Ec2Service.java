@@ -1,12 +1,12 @@
 package service;
 
-import static service.FilterService.BILLING;
-import static service.FilterService.BOM_COMPONENTS;
-import static service.FilterService.CORE_BOM;
-import static service.FilterService.FULFILLMENT;
-import static service.FilterService.ORDER_MANAGEMENT;
-import static service.FilterService.REVENUE_RECOGNITION;
-import static service.FilterService.TEST_UTILITIES;
+import static constants.ComponentConstant.BILLING;
+import static constants.ComponentConstant.BOM_COMPONENTS;
+import static constants.ComponentConstant.CORE_BOM;
+import static constants.ComponentConstant.FULFILLMENT;
+import static constants.ComponentConstant.ORDER_MANAGEMENT;
+import static constants.ComponentConstant.REVENUE_RECOGNITION;
+import static constants.ComponentConstant.TEST_UTILITIES;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
