@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import model.ServiceStatus;
 
 public class FilterService {
   private static final String DEV = "dev";
@@ -38,6 +39,11 @@ public class FilterService {
 
   private boolean matchEnvironment(String serviceEnvironment, String targetEnvironment){
     return serviceEnvironment.equals(targetEnvironment);
+  }
+
+  public boolean isAllServicesRunningIn(String component, Map<String, List<ServiceStatus>> serviceRunningMap){
+
+    return serviceRunningMap.get(component).stream().allMatch(ServiceStatus::isRunning);
   }
 
 }
