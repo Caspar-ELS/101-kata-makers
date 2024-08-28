@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import model.ServiceStatus;
 
 public class Ec2Service {
 
@@ -26,7 +28,7 @@ public class Ec2Service {
   private final TagService tagService = new TagService();
   private final FilterService filterService = new FilterService();
 
-  private static final HashMap<String, List<String>> SERVICE_RUNNING_MAP = new HashMap<>(Map.of(
+  private static final HashMap<String, List<ServiceStatus>> COMPONENT_SERVICES_STATUS_MAP = new HashMap<>(Map.of(
       BILLING, Collections.emptyList(),
       ORDER_MANAGEMENT, Collections.emptyList(),
       FULFILLMENT, Collections.emptyList(),
@@ -37,6 +39,8 @@ public class Ec2Service {
 
 
   public void listRunningInstance() {
+    initialiseServiceRunningMap();
+
     DescribeInstancesRequest request = new DescribeInstancesRequest().withFilters(
         RUNNING_INSTANCE_FILTER);
 
@@ -51,20 +55,28 @@ public class Ec2Service {
           String serviceShortName = getServiceShortNameFrom(tagMap);
           String component = getServiceComponent(serviceShortName);
 
-          List<String> servicesInComponent = new ArrayList(SERVICE_RUNNING_MAP.get(component));
-          servicesInComponent.add(serviceShortName);
-          SERVICE_RUNNING_MAP.put(component, servicesInComponent);
+          List<ServiceStatus> servicesInComponent = new ArrayList<>(
+              COMPONENT_SERVICES_STATUS_MAP.get(component));
+          Optional<ServiceStatus> optionalServiceStatus = servicesInComponent.stream()
+              .filter(service -> serviceShortName.equals(service.getName())).findFirst();
+
+          if(optionalServiceStatus.isPresent()){
+            updateServiceStatus(servicesInComponent, optionalServiceStatus);
+
+            COMPONENT_SERVICES_STATUS_MAP.put(component, servicesInComponent);
+          }
         }
       }
     }
 
-    BOM_COMPONENTS.forEach((component, services) -> {
-      System.out.printf("Component: %s, Services: %s%n", component, services);
-      for (String service : services) {
-        System.out.printf("Service: %s, State: %s%n", service,
-            isRunning(service) ? "Running" : "Not Running");
-      }
-    });
+    System.out.println("To run regression test you have to start component:");
+    System.out.println(String.format("Orders: %s", printComponentFor(List.of(ORDER_MANAGEMENT, BILLING))));
+    System.out.println(String.format("Invoices: %s", printComponentFor(List.of(BILLING))));
+    System.out.println(String.format("CreditNotes: %s", printComponentFor(List.of(BILLING))));
+    System.out.println(String.format("TransactionStatuses: %s", printComponentFor(List.of(BILLING))));
+    System.out.println(String.format("AccountsReceivablesRevenueRecognition: %s", printComponentFor(List.of(ORDER_MANAGEMENT, BILLING, REVENUE_RECOGNITION, TEST_UTILITIES, FULFILLMENT))));
+    System.out.println(String.format("GeneralLedgerRevenueRecognitionV3: %s", printComponentFor(List.of(ORDER_MANAGEMENT, REVENUE_RECOGNITION, FULFILLMENT))));
+
   }
 
   private String getServiceComponent(String serviceShortName) {
@@ -80,11 +92,6 @@ public class Ec2Service {
         && filterService.isDev(getServiceEnvironment(tagMap));
   }
 
-  private void printRow(Map<String, String> tagMap, Instance instance) {
-    System.out.printf("Name: %s, Component: %s, State: %s%n", getServiceShortNameFrom(tagMap),
-        getServiceComponent(getServiceShortNameFrom(tagMap)), instance.getState().getName());
-  }
-
   private String getServiceShortNameFrom(Map<String, String> tagMap) {
     return tagMap.get("Role");
   }
@@ -93,9 +100,27 @@ public class Ec2Service {
     return tagMap.get("Environment");
   }
 
-  private boolean isRunning(String serviceShortName) {
-    return SERVICE_RUNNING_MAP.entrySet().stream()
-        .anyMatch(entry -> entry.getValue().contains(serviceShortName));
+  private List<ServiceStatus> initialServicesStatus(List<String> serviceNames){
+    return serviceNames.stream().map(serviceName -> new ServiceStatus(serviceName, false)).toList();
   }
 
+  private void initialiseServiceRunningMap(){
+    COMPONENT_SERVICES_STATUS_MAP.put(BILLING, initialServicesStatus(BOM_COMPONENTS.get(BILLING)));
+    COMPONENT_SERVICES_STATUS_MAP.put(ORDER_MANAGEMENT, initialServicesStatus(BOM_COMPONENTS.get(ORDER_MANAGEMENT)));
+    COMPONENT_SERVICES_STATUS_MAP.put(FULFILLMENT, initialServicesStatus(BOM_COMPONENTS.get(FULFILLMENT)));
+    COMPONENT_SERVICES_STATUS_MAP.put(REVENUE_RECOGNITION, initialServicesStatus(BOM_COMPONENTS.get(REVENUE_RECOGNITION)));
+    COMPONENT_SERVICES_STATUS_MAP.put(CORE_BOM, initialServicesStatus(BOM_COMPONENTS.get(CORE_BOM)));
+    COMPONENT_SERVICES_STATUS_MAP.put(TEST_UTILITIES, initialServicesStatus(BOM_COMPONENTS.get(TEST_UTILITIES)));
+  }
+
+  private List<String> printComponentFor(List<String> components) {
+    return components.stream().filter(component -> !filterService.isAllServicesRunningIn(component,
+        COMPONENT_SERVICES_STATUS_MAP)).toList();
+  }
+
+  private void updateServiceStatus(List<ServiceStatus> servicesInComponent, Optional<ServiceStatus> optionalServiceStatusToBeUpdated){
+    ServiceStatus serviceStatus = optionalServiceStatusToBeUpdated.get();
+    serviceStatus.setRunning(true);
+    servicesInComponent.set(servicesInComponent.indexOf(serviceStatus), serviceStatus);
+  }
 }
