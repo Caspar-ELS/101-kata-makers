@@ -1,9 +1,9 @@
-package filter;
+package util;
 
 import java.util.List;
 import java.util.Map;
 
-public class BomServiceFilter {
+public class BomConstants {
 
   public static final String BILLING = "billing";
   public static final String ORDER_MANAGEMENT = "order_management";
@@ -27,10 +27,14 @@ public class BomServiceFilter {
       "GeneralLedgerRevenueRecognitionV3", List.of(ORDER_MANAGEMENT, REVENUE_RECOGNITION)
   );
 
-  public boolean isBomService(String serviceAcronym) {
-    return bomServices.contains(serviceAcronym);
-  }
-
-
+  public static final Map<String, List<String>> bomComponents = Map.of(
+      BILLING, List.of("trds", "trsb", "trdr", "inas", "cats", "atss", "trsr", "insr",
+          "insp", "cnsp", "tltt"),
+      ORDER_MANAGEMENT, List.of("orcx", "orrx", "oisu"),
+      FULFILLMENT, List.of("fucx", "aofc", "arfx", "asft", "asfc", "pofc", "fusp"),
+      REVENUE_RECOGNITION, List.of("rrspv3", "rrsrv3", "rersv3", "reacv3", "rertv3", "arfs"),
+      CORE_BOM, List.of("bocs", "nesx"),
+      TEST_UTILITIES, List.of("eier", "tekp")
+  );
 
 }
