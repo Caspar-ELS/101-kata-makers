@@ -2,6 +2,7 @@ package service;
 
 import static util.BomConstants.bomComponents;
 import static util.BomConstants.bomServices;
+import static util.BomConstants.regressionComponents;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.ec2.AmazonEC2;
@@ -22,25 +23,41 @@ public class Ec2Service {
 
   public void printRunningInstances() {
     List<Instance> instances = getRunningInstances();
-
     findAllRunningBomServices(instances);
 
-    for (String service : runningServices) {
-      printNameAndStateOf(service);
-    }
+    runningServices.forEach(this::printNameAndState);
   }
 
   public void printInstancesByComponent() {
     List<Instance> instances = getRunningInstances();
-
     findAllRunningBomServices(instances);
 
     for (Map.Entry<String, List<String>> entry : bomComponents.entrySet()) {
       List<String> services = entry.getValue();
       System.out.println("Component: " + entry.getKey());
-      services.forEach(this::printNameAndStateOf);
+      services.forEach(this::printNameAndState);
+      System.out.println("------------------------");
     }
   }
+
+  public void printComponentsForRegressionTests() {
+    List<Instance> instances = getRunningInstances();
+    findAllRunningBomServices(instances);
+
+    for (Map.Entry<String,List<String>> entry : regressionComponents.entrySet()) {
+      List<String> components = entry.getValue();
+
+      System.out.println("Collection: " + entry.getKey());
+
+      components.forEach(component -> {
+        List<String> services = bomComponents.get(component);
+        System.out.println("Component: " + component);
+        services.forEach(this::printNameAndState);
+        System.out.println("------------------------");
+      });
+    }
+  }
+
 
   private List<Instance> getRunningInstances() {
     DescribeInstancesResult describeInstancesResult = getDescribeInstancesResult();
@@ -83,7 +100,7 @@ public class Ec2Service {
         .orElse("N/A");
   }
 
-  private void printNameAndStateOf(String service) {
+  private void printNameAndState(String service) {
     System.out.printf(
         "Name: %s, State: %s%n",
         service,

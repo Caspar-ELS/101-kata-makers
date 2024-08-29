@@ -12,6 +12,7 @@ public class Application {
     System.out.println("Please select an option:");
     System.out.println("1. Show all running instances in DEV");
     System.out.println("2. Show all instances by component");
+    System.out.println("3. Show all instances by regression test collection");
 
     int option = scanner.nextInt();
 
@@ -23,6 +24,10 @@ public class Application {
       case 2:
         System.out.println("Printing instances by component...");
         ec2Service.printInstancesByComponent();
+        break;
+      case 3:
+        System.out.println("Printing components for regression tests...");
+        ec2Service.printComponentsForRegressionTests();
         break;
       default:
         System.out.println("Invalid option. Please enter 1 or 2.");
