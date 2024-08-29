@@ -58,7 +58,6 @@ public class Ec2Service {
     }
   }
 
-
   private List<Instance> getRunningInstances() {
     DescribeInstancesResult describeInstancesResult = getDescribeInstancesResult();
 
