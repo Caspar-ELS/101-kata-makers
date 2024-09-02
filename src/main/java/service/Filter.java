@@ -54,33 +54,20 @@ public class Filter {
     return values.contains(instanceName);
   }
 
-//  public static String getComponentFor(String testName) {
-//    List<Component> componentsList = componentsForTests.get(testName);
-//    StringBuilder formattedComponentsList = new StringBuilder();
-//    for (Component component : componentsList) {
-//      formattedComponentsList.append(component.name()).append("\n");
-//    }
-//    return formattedComponentsList.toString();
-//  }
-
   public static String getEnvironment(Instance instance) {
-    String environment = "";
-    for (Tag tag : instance.getTags()) {
-      if (tag.getKey().equals("Environment")) {
-        environment = tag.getValue();
-      }
-    }
-    return environment;
+    return instance.getTags().stream()
+        .filter(tag -> tag.getKey().equals("Environment"))
+        .findFirst()
+        .map(Tag::getValue)
+        .orElse("n/a");
   }
 
   public static String getServiceAcronym(Instance instance) {
-    String instanceName = "";
-    for (Tag tag : instance.getTags()) {
-      if (tag.getKey().equals("Role")) {
-        instanceName = tag.getValue();
-      }
-    }
-    return instanceName;
+    return instance.getTags().stream()
+        .filter(tag -> tag.getKey().equals("Role"))
+        .findFirst()
+        .map(Tag::getValue)
+        .orElse("n/a");
   }
 
   public static  boolean isBomService(String instanceName) {

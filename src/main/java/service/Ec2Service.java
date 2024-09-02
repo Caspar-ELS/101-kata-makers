@@ -14,7 +14,6 @@ import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
 import com.amazonaws.services.ec2.model.DescribeInstancesResult;
 import com.amazonaws.services.ec2.model.Filter;
-import com.amazonaws.services.ec2.model.Instance;
 import enums.Component;
 import enums.Test;
 import java.util.ArrayList;
@@ -25,20 +24,22 @@ import model.ServiceInstance;
 public class Ec2Service {
 
   private static final Regions DEFAULT_REGION = Regions.EU_WEST_1;
-  private static final AmazonEC2 ec2 = AmazonEC2ClientBuilder.standard().withRegion(DEFAULT_REGION).build();
+  private static final AmazonEC2 ec2 = AmazonEC2ClientBuilder.standard().withRegion(DEFAULT_REGION)
+      .build();
 
   public ArrayList<ServiceInstance> getAllDevRunningInstances() {
 
     DescribeInstancesResult runningInstancesResult = getRunningInstancesResult();
     ArrayList<ServiceInstance> runningInstances = new ArrayList<>();
-    runningInstancesResult.getReservations().forEach(reservation -> {
-      for (Instance instance : reservation.getInstances()) {
-        String instanceName = getServiceAcronym(instance);
-        if (isDev(getEnvironment(instance)) && isBomService(instanceName)) {
-          runningInstances.add(ServiceInstance.builder().name(instanceName).isRunning(true).build());
-        }
-      }
-    });
+    runningInstancesResult.getReservations().stream()
+        .flatMap(reservation -> reservation.getInstances().stream())
+        .filter(instance -> isDev(getEnvironment(instance)) && isBomService(
+            getServiceAcronym(instance)))
+        .forEach(
+            instance -> runningInstances.add(
+                ServiceInstance.builder().name(getServiceAcronym(instance)).isRunning(true).build())
+        );
+
     return runningInstances;
   }
 
@@ -59,23 +60,25 @@ public class Ec2Service {
   public List<ServiceInstance> getInstancesByComponent(Component component) {
     DescribeInstancesResult instancesResult = getDescribeInstancesResult();
     ArrayList<ServiceInstance> componentRunningInstances = new ArrayList<>();
-    instancesResult.getReservations().forEach(reservation -> {
-      for (Instance instance : reservation.getInstances()) {
-        String instanceName = getServiceAcronym(instance);
-        if (isDev(getEnvironment(instance)) && belongsToEnumComponent(component, instanceName)) {
-          componentRunningInstances.add(ServiceInstance.builder().name(instanceName).isRunning(true).build());
-        }
-      }
-    });
+
+    instancesResult.getReservations().stream()
+        .flatMap(reservation -> reservation.getInstances().stream())
+        .filter(instance -> isDev(getEnvironment(instance)) && belongsToEnumComponent(component,
+            getServiceAcronym(instance)))
+        .forEach(
+            instance -> componentRunningInstances.add(
+                ServiceInstance.builder().name(getServiceAcronym(instance)).isRunning(true).build())
+        );
+
     List<ServiceInstance> inactiveServices = checkForComponentServices(componentRunningInstances,
         component);
-     componentRunningInstances.addAll(inactiveServices);
-     return componentRunningInstances;
+    componentRunningInstances.addAll(inactiveServices);
+    return componentRunningInstances;
   }
 
   public void listInstancesByComponent(Component component) {
     List<ServiceInstance> instancesByComponent = getInstancesByComponent(component);
-    System.out.println("Component's instances in DEV\n");
+    System.out.printf("%s component's instances in DEV\n", component);
     instancesByComponent.forEach(Ec2Service::printInstanceState);
   }
 
