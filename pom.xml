@@ -9,6 +9,15 @@
   <version>0.0.0</version>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.34</version>
+      <scope>provided</scope>
+    </dependency>
+
+
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk</artifactId>
@@ -21,6 +30,14 @@
       <version>5.6.2</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>5.13.0</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <properties>
