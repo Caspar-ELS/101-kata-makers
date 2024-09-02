@@ -30,7 +30,7 @@ public class Application {
         ec2Service.printComponentsForRegressionTests();
         break;
       default:
-        System.out.println("Invalid option. Please enter 1 or 2.");
+        System.out.println("Invalid option. Please enter 1, 2, or 3.");
         break;
     }
 

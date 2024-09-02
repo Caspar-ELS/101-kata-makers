@@ -78,10 +78,9 @@ public class Ec2Service {
   private void findAllRunningBomServices(List<Instance> instances) {
     instances.forEach(instance -> instance.getTags().stream()
         .filter(this::isDevEnvironment)
-        .filter(instanceName -> isBomService(getInstanceName(instance)))
-        .forEach(tag -> runningServices.add(getInstanceName(instance))));
+        .filter(tag -> isBomService(getServiceAcronymFrom(instance)))
+        .forEach(tag -> runningServices.add(getServiceAcronymFrom(instance))));
   }
-
 
   private boolean isDevEnvironment(Tag tag) {
     return tag.getKey().equals("Environment") && tag.getValue().equals("dev");
@@ -91,7 +90,7 @@ public class Ec2Service {
     return bomServices.contains(serviceAcronym);
   }
 
-  private String getInstanceName(Instance instance) {
+  private String getServiceAcronymFrom(Instance instance) {
     return instance.getTags().stream()
         .filter(tag -> tag.getKey().equals("Role"))
         .findFirst()
