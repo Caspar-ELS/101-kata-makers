@@ -1,0 +1,7 @@
+package enums;
+
+public enum Component {
+
+  BILLING, ORDER_MANAGEMENT, FULFILLMENT, REVENUE_RECOGNITION, CORE_BOM, TEST_UTILITIES;
+
+}
