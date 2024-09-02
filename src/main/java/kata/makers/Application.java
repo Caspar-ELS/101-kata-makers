@@ -11,8 +11,8 @@ public class Application {
 
     System.out.println("Please select an option:");
     System.out.println("1. Show all running instances in DEV");
-    System.out.println("2. Show all instances by component");
-    System.out.println("3. Show all instances by regression test collection");
+    System.out.println("2. Show all instances in DEV sorted by component");
+    System.out.println("3. Show all instances in DEV sorted by regression test collection");
 
     int option = scanner.nextInt();
 

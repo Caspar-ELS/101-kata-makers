@@ -15,6 +15,9 @@ import java.util.Map;
 
 public class Ec2Service {
 
+  private static final String DIVIDER = "------------------------";
+  private static final String RUNNING = "running";
+  private static final String NOT_RUNNING = "not running";
   private final List<String> runningServices = new ArrayList<>();
   private static final Regions DEFAULT_REGION = Regions.EU_WEST_1;
 
@@ -33,10 +36,12 @@ public class Ec2Service {
     findAllRunningBomServices(instances);
 
     for (Map.Entry<String, List<String>> entry : bomComponents.entrySet()) {
-      List<String> services = entry.getValue();
       System.out.println("Component: " + entry.getKey());
+
+      List<String> services = entry.getValue();
       services.forEach(this::printNameAndState);
-      System.out.println("------------------------");
+
+      System.out.println(DIVIDER);
     }
   }
 
@@ -50,10 +55,12 @@ public class Ec2Service {
       System.out.println("Collection: " + entry.getKey());
 
       components.forEach(component -> {
-        List<String> services = bomComponents.get(component);
         System.out.println("Component: " + component);
+
+        List<String> services = bomComponents.get(component);
         services.forEach(this::printNameAndState);
-        System.out.println("------------------------");
+
+        System.out.println(DIVIDER);
       });
     }
   }
@@ -70,7 +77,7 @@ public class Ec2Service {
     AmazonEC2 ec2 = AmazonEC2ClientBuilder.standard().withRegion(DEFAULT_REGION).build();
 
     DescribeInstancesRequest request = new DescribeInstancesRequest()
-        .withFilters(new Filter("instance-state-name").withValues("running"));
+        .withFilters(new Filter("instance-state-name").withValues(RUNNING));
 
     return ec2.describeInstances(request);
   }
@@ -102,7 +109,7 @@ public class Ec2Service {
     System.out.printf(
         "Name: %s, State: %s%n",
         service,
-        runningServices.contains(service) ? "running" : "not running"
+        runningServices.contains(service) ? RUNNING : NOT_RUNNING
     );
   }
 }
