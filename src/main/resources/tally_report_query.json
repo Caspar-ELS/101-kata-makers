@@ -1,0 +1,42 @@
+{
+  "sort": [
+    {
+      "@timestamp": {
+        "order": "desc",
+        "unmapped_type": "boolean"
+      }
+    }
+  ],
+  "size": 1000,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "query": "",
+            "analyze_wildcard": true,
+            "time_zone": "Europe/London"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "match_phrase": {
+            "fields.service": {
+              "query": ""
+            }
+          }
+        },
+        {
+          "range": {
+            "@timestamp": {
+              "gte": "",
+              "lte": "",
+              "format": "strict_date_optional_time"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
