@@ -18,6 +18,8 @@ public class TallyReport {
   KibanaService kibanaClient = new KibanaService();
 
   private final List<String> invoiceIds = new ArrayList<>();
+  private final List<String> SubmittedInvoiceIds = new ArrayList<>();
+  private final List<String> FailedInvoiceIds = new ArrayList<>();
 
 
   @When("Retrieve {string} for {string} from {string} between {string} and {string}")
@@ -31,11 +33,31 @@ public class TallyReport {
 
   @Then("Verify test data for {string} from {string} between {string} and {string}")
   public void VerifyData(String query, String serviceName, String fromTime, String toTime) {
+    for (String invoiceId : invoiceIds) {
+      String queryWithInvoiceId = query.replace("<REPLACE_WITH_INVOICE_ID>", invoiceId);
+      log.info("Query = {}", queryWithInvoiceId);
+      List<String> kibanaResponse = this.kibanaClient.getTestData(queryWithInvoiceId, serviceName, fromTime, toTime, "Payload: ");
+      log.info("kiabanaResponse = {}", kibanaResponse);
+      log.info("kiabanaResponse boo = {}", kibanaResponse.isEmpty());
+      if (kibanaResponse.isEmpty()) {
+        this.FailedInvoiceIds.add(invoiceId);
+      } else {
+        this.SubmittedInvoiceIds.add(invoiceId);
+      }
+    }
 
   }
 
     @And("Create Test Tally Report")
     public void createTestTallyReport() {
+      log.info("=============Creating Test Tally Report===========");
+      log.info("invoiceIds={}", this.invoiceIds);
+      log.info("Total Invoices = {}", this.invoiceIds.size());
+      log.info("SubmittedInvoiceIds = \n{}", this.SubmittedInvoiceIds);
+      log.info("Total Submitted Invoices = {}", this.SubmittedInvoiceIds.size());
+      log.info("FailedInvoiceIds = \n{}", this.FailedInvoiceIds);
+      log.info("Total Failed Invoices = {}", this.FailedInvoiceIds.size());
+      log.info("=============End of Test Tally Report===========");
 
     }
 
@@ -49,6 +71,6 @@ public class TallyReport {
         this.invoiceIds.add(invoiceId);
       }
     }
-  }
+}
 
 
