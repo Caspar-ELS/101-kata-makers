@@ -13,6 +13,18 @@ public class Application {
 
   public static void main(String[] args) {
     JSONObject payload = new JSONObject();
+    getTransactionHeaders(payload);
+
+    getInvoiceLines(payload);
+
+    try (FileWriter file = new FileWriter("src/main/resources/payload.json")) {
+      file.write(payload.toString(2));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private static void getTransactionHeaders(JSONObject payload) {
     payload.put("sourceSystem", "SF_MQ2COM");
     payload.put("orderNumber", "test_bom_invoice_8k_line");
     payload.put("sourceSystemId", "BOM_SOURCE_SYSTEM_ID");
@@ -67,9 +79,11 @@ public class Application {
     deliveryAddress.put("city", "city2");
     deliveryAccount.put("address", deliveryAddress);
     payload.put("deliveryAccount", deliveryAccount);
+  }
 
+  private static void getInvoiceLines(JSONObject payload) {
     JSONArray invoiceLines = new JSONArray();
-    for (int i = 1; i <= 8000; i++) {
+    for (int i = 1; i <= 50; i++) {
       JSONObject invoiceLine = new JSONObject();
       invoiceLine.put("lineNumber", i);
       invoiceLine.put("unitPrice", 2160.0);
@@ -77,30 +91,46 @@ public class Application {
       invoiceLine.put("netAmount", 2160.0);
       invoiceLine.put("sellingModel", "One Off");
 
-      JSONObject product = new JSONObject();
-      product.put("reference", "BOM_SOURCE_SYSTEM_ID_" + i);
-      product.put("code", "EPR-100062");
-      product.put("taxCode", "S011");
-      product.put("title", "Applied Radiation and Isotopes - Article Publishing Charge");
-      invoiceLine.put("product", product);
+      getProduct(i);
 
-      JSONObject shipFromAddress = new JSONObject();
-      shipFromAddress.put("addressLine1", "Radarweg 29");
-      shipFromAddress.put("city", "Amsterdam");
-      shipFromAddress.put("postcode", "1043 NX");
-      shipFromAddress.put("country", "Netherlands");
-      shipFromAddress.put("countryISO", "NL");
+      JSONObject taxLine = new JSONObject();
+      taxLine.put("amount", 0);
+      taxLine.put("code", "NL0%");
+      taxLine.put("lineNumber", i);
+      taxLine.put("rate", 0);
+        JSONArray exportJurisdictionDetails = new JSONArray();
+        JSONObject exportJurisdictionDetail = new JSONObject();
+        exportJurisdictionDetail.put("country", "NL");
+        exportJurisdictionDetail.put("registrationNumber", "NL005033019B01");
+        exportJurisdictionDetails.put(exportJurisdictionDetail);
+      taxLine.put("exportJurisdictionDetails", exportJurisdictionDetails);
+      invoiceLine.put("taxLine", taxLine);
+
+
+      JSONObject shipFromAddress = getShipFromAddress();
       invoiceLine.put("shipFromAddress", shipFromAddress);
 
       invoiceLines.put(invoiceLine);
     }
     payload.put("invoiceLines", invoiceLines);
+  }
 
-    try (FileWriter file = new FileWriter("src/main/resources/payload.json")) {
-      file.write(payload.toString(2));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  private static JSONObject getShipFromAddress() {
+    JSONObject shipFromAddress = new JSONObject();
+    shipFromAddress.put("addressLine1", "Radarweg 29");
+    shipFromAddress.put("city", "Amsterdam");
+    shipFromAddress.put("postcode", "1043 NX");
+    shipFromAddress.put("country", "Netherlands");
+    shipFromAddress.put("countryISO", "NL");
+    return shipFromAddress;
+  }
+
+  private static void getProduct(int i) {
+    JSONObject product = new JSONObject();
+    product.put("reference", "BOM_SOURCE_SYSTEM_ID_" + i);
+    product.put("code", "EPR-100062");
+    product.put("taxCode", "S011");
+    product.put("title", "Applied Radiation and Isotopes - Article Publishing Charge");
   }
 }
 
