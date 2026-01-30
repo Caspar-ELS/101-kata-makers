@@ -16,9 +16,13 @@ public class HelloWorldTest {
 
   @Test
   public void shouldReturnNullWhenQueryTooShort() {
-    assertEquals(HelloWorld.findCity("").size(), 0);
-    assertEquals(HelloWorld.findCity("a").size(), 0);
-    assertNotEquals(HelloWorld.findCity("Pa"), 0);
+    int minimumSize = 2;
+
+    String tooSmall = cities.get(0).substring(0, minimumSize - 1);
+    assertEquals(HelloWorld.findCity(tooSmall).size(), 0);
+
+    String bigEnough = cities.get(0).substring(0, minimumSize);
+    assertNotEquals(HelloWorld.findCity(bigEnough), 0);
   }
 
   @Test
