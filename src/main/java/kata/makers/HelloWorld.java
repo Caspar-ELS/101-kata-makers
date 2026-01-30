@@ -11,17 +11,18 @@ public class HelloWorld {
 
   public static List<String> findCity(String find) {
     if (find.equals("*")) return allCities;
-    if (find.length() < 2) return null;
 
-    List<String> found = new ArrayList<>();
+    List<String> result = new ArrayList<>();
+
+    if (find.length() < 2) return result;
 
     allCities.forEach(city -> {
       if (city.toLowerCase().contains(find.toLowerCase())) {
-        found.add(city);
+        result.add(city);
       }
     });
 
-    return found;
+    return result;
 
   }
 }

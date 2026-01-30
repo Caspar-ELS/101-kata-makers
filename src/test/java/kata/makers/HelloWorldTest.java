@@ -1,8 +1,7 @@
 package kata.makers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,9 +16,9 @@ public class HelloWorldTest {
 
   @Test
   public void shouldReturnNullWhenQueryTooShort() {
-    assertNull(HelloWorld.findCity(""));
-    assertNull(HelloWorld.findCity("a"));
-    assertNotNull(HelloWorld.findCity("ab"));
+    assertEquals(HelloWorld.findCity("").size(), 0);
+    assertEquals(HelloWorld.findCity("a").size(), 0);
+    assertNotEquals(HelloWorld.findCity("Pa"), 0);
   }
 
   @Test
