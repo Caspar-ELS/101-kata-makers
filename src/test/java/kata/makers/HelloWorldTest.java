@@ -27,7 +27,7 @@ public class HelloWorldTest {
     cities.forEach(city -> {
 
       String shortCity = city.substring(0, 2);
-      System.out.println("Now testing city: " + city + ", short: " + shortCity);
+      System.out.println("Now testing \"" + city + "\", short \"" + shortCity + "\"");
 
       List<String> result = HelloWorld.findCity(shortCity);
       assertTrue(result.contains(city));
@@ -40,7 +40,7 @@ public class HelloWorldTest {
     cities.forEach(city -> {
 
       String shortCity = city.substring(2);
-      System.out.println("Now testing city: " + city + ", short: " + shortCity);
+      System.out.println("Now testing \"" + city + "\", short \"" + shortCity + "\"");
 
       List<String> result = HelloWorld.findCity(shortCity);
       assertTrue(result.contains(city));
