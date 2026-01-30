@@ -10,37 +10,23 @@
 
   <dependencies>
     <dependency>
+<<<<<<< Updated upstream
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.6.2</version>
+=======
+      <groupId>com.elsevier.q2c</groupId>
+      <artifactId>base-starter-pom</artifactId>
+      <type>pom</type>
+      <version>2026-01-20-0f777da</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+>>>>>>> Stashed changes
       <scope>test</scope>
     </dependency>
   </dependencies>
 
-  <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>build-info</id>
-            <goals>
-              <goal>build-info</goal>
-            </goals>
-          </execution>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>
